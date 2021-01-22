@@ -1,0 +1,66 @@
+   .wrapper {
+       display: grid;
+       grid-template-columns: repeat(3, [col-start] 1fr);
+       grid-gap: 20px;
+       border-color: red;
+       border-style: solid;
+   }
+   
+   .grid-item {
+       padding: 10px;
+       margin: 10px;
+       text-align: center;
+   }
+   
+   .pelna {
+       background: lightgreen;
+       color: black;
+   }
+   
+   .przeterminowana {
+       background: tomato;
+       color: black;
+   }
+   
+   .pusta {
+       background: lightgray;
+       color: black;
+    /*   border: solid;
+       border-color: black; */
+   }
+   
+   .main-data {
+       font-weight: bold;
+       font-size: 2em;
+   } 
+   
+   .highlighted-description {
+       font-weight: normal;
+       font-size: 1.5em;
+       color: #000;
+   }
+   
+   .flekser {
+       display: flex;
+       flex-direction: row;
+       justify-content: space-between;
+   }
+   .box-number {
+       font-size: 2.5em;
+       font-weight: bold;
+       border-color: gray;
+       background-color: lightgray;
+       border-style: solid;
+       padding: 0 20 0 20px;
+   }   
+   .panel-checkboxes {
+       font-size: 1em;
+       font-weight: normal;
+       padding: 0 15 0 15px;
+   }
+   
+
+   input[type=checkbox] {
+    transform: scale(1.5);
+    cursor: pointer;
+   }
