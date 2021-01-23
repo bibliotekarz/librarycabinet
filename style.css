@@ -25,14 +25,12 @@
    .pusta {
        background: lightgray;
        color: black;
-    /*   border: solid;
-       border-color: black; */
    }
    
    .main-data {
        font-weight: bold;
        font-size: 2em;
-   } 
+   }
    
    .highlighted-description {
        font-weight: normal;
@@ -45,6 +43,7 @@
        flex-direction: row;
        justify-content: space-between;
    }
+   
    .box-number {
        font-size: 2.5em;
        font-weight: bold;
@@ -52,15 +51,48 @@
        background-color: lightgray;
        border-style: solid;
        padding: 0 20 0 20px;
-   }   
+   }
+   
    .panel-checkboxes {
        font-size: 1em;
        font-weight: normal;
        padding: 0 15 0 15px;
+       text-align: center;
    }
    
-
+   .decoration-none {
+       text-decoration: none;
+       color: black;
+   }
+   
+   .realized-list {
+       color: gray;
+       font-weight: 800;
+   }
+   
+   .edycja {
+       background: lightgreen;
+       color: black;
+       padding: 10px;
+       margin: 10px;
+       max-width: 450px;
+   }
+   
+   .descriptive-container {
+       display: grid;
+       grid-template-columns: 2fr 3fr;
+       /* repeat(2, [col-start] 1fr); */
+       grid-gap: 10px;
+       padding-top: 10px;
+   }
+   
+   .descriptive-container-end {
+       display: inline-block;
+       max-width: 170px;
+       text-align: right;
+   }
+   
    input[type=checkbox] {
-    transform: scale(1.5);
-    cursor: pointer;
+       transform: scale(1.5);
+       cursor: pointer;
    }
