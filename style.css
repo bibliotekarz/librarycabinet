@@ -92,6 +92,19 @@
        max-width: 170px;
        text-align: right;
    }
+
+   .alert {
+       color: red;
+       text-align: center;
+   }
+
+   .statuson {
+       display: block;
+   }
+
+   .statusoff {
+       display: none;
+   }
    
    input[type=checkbox] {
        transform: scale(1.5);

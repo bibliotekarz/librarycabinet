@@ -20,3 +20,4 @@ if (file_exists($file) && (file_exists($dbfile) == false)) {
     echo "Sql file ". $file ." is missing or database ". $dbfile ." already exists.";
     exit;
 }
+?>

@@ -1,6 +1,6 @@
 <?php
 
-$dbfile = '../librarycabinet.db';
+$dbfile = './librarycabinet.db';
 
 class MyDB extends SQLite3
 {
@@ -19,7 +19,7 @@ if (count($_POST) > 0) {
     $row = $db->querySingle($sql);
     //    $row = $db->query($sql);
 
-    if (is_int ($row) ) {
+    if (is_int($row) ) {
         $dane = "Skrytka użytkownika to " . $row;
     } else {
         $dane = "Nie ma skrytki z zawartością dla Użytkownika z identyfikatorem " . $_POST["user_id"];
