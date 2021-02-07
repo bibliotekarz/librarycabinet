@@ -1,5 +1,4 @@
 <?php
-
 $dbfile = './librarycabinet.db';
 
 class MyDB extends SQLite3
@@ -10,19 +9,20 @@ class MyDB extends SQLite3
     }
 }
 
-
 $user_id_sanitized = 0;
 $costam = [];
-$costam[1]['box_nr'] = "";
+$costam[0]['box_nr'] = "";
 
 if (count($_POST) > 0) {
-    $db = new MyDB($dbfile);
-    $user_id_sanitized = filter_var($_POST["user_id"], FILTER_VALIDATE_INT);
-    if (is_int($user_id_sanitized)) {
+    $user_id_sanitized_int = filter_var($_POST["user_id"], FILTER_VALIDATE_INT);
+    $user_id_sanitized_email = filter_var($_POST["user_id"], FILTER_VALIDATE_EMAIL);
+    $user_id_sanitized = $user_id_sanitized_email . $user_id_sanitized_int;
+    // tu jest sanityzowany string
+        echo "<br>".$user_id_sanitized. " user_id_sanitized ".  gettype($user_id_sanitized)."<br><hr>";
 
-        $sql = 'SELECT box_nr FROM "user" where user_id = ' . $user_id_sanitized;
-        $row = $db->querySingle($sql);
 
+    if (is_string($user_id_sanitized)) {    
+        $db = new MyDB($dbfile);
         $stm = $db->prepare('SELECT box_nr FROM "user" where user_id = :user_id ');
         $stm->bindValue(':user_id', $user_id_sanitized);
         $score = $stm->execute();
@@ -33,36 +33,27 @@ if (count($_POST) > 0) {
 
     } else {
         $row = "";
-        
+        echo "<h1> row pusty</h1>";
     }
-
-    echo "<br>costam start<br>";
-    echo "<pre>";
-   print_r($costam);
-    echo "</pre>";
 
     foreach ($costam as $v1) {
         foreach ($v1 as $v2) {
-            echo "$v2 <br>\n";
+            echo "wynik $v2 <br>\n";
 
         }
     }
 
-    // $comma_separated = implode(",", $costam[0]);
-
-    // print_r ($comma_separated);
-
-
-    echo "+++++++++++++" . $costam[1]['box_nr'];
-
-    if (is_int($costam[1]['box_nr'])) {
-        
+// :TODO: dopracować warunki
+    if (isset($costam[0]['box_nr'])) {
+echo " <i> w ifie ma stringa_". $costam[0]['box_nr'] ."_</i>"  ;     
         // user posiada książkę w skrytce
         $status = "statusoff33";
         $status1 = "statuson34";
         $query_result = " jest wynik z row linia 35";
     } else {
         // user nie przeszedł walidacji albo nie ma nic w skrytce
+        
+echo "<i> w elsee niema stringa_". $costam[0]['box_nr'] ."_</i>"   ;     
         $status = "statuson38";
         $status1 = "statuson39";
         $query_result = " brak wyniku z row linia 40";
@@ -77,10 +68,10 @@ if (count($_POST) > 0) {
 $info = [
     "title_info" => "Numer skrytki użytkownika ",
     "no_user_id" => "Nie ma skrytki z zawartością dla Użytkownika o identyfikatorze ",
-    "bad_user" => "Nie ma takiego użytkownika. <br>Jako identyfikator użytkownika podaj tylko cyfry.",
-    "start_user" => "Zaczynamy :)",
+    "bad_user" => "Nie ma takiego użytkownika. <br>Jako identyfikator użytkownika podaj adres email albo numer użytkownika. ",
+    "start_user" => "Zaczynamy :) ",
     "box_found" => "Nr skrytki użytkownika ",
-    "head_info" => "Wprowadź nr użytkownika żeby sprawdzić numer swojej skrytki z książkami ",
+    "head_info" => "Wprowadź adres email lub nr użytkownika żeby sprawdzić numer swojej skrytki z książkami ",
     "send_button" => "Wyślij",
 ];
 
@@ -103,9 +94,8 @@ $info = [
         <section class="edycja "> <?php echo " staus section 2 " . $status1; ?>
             <div>
                 <?php
-                // :TODO: zmienić warunki/zasady obsługi kilku skrytek
                 if ($user_id_sanitized > 0) {
-                    if (is_numeric($costam[2]['box_nr'])) {
+                    if (is_numeric($costam[0]['box_nr'])) {
                         echo "<h3>" . $info['box_found'] . $user_id_sanitized . "</h3>";
                         foreach ($costam as $v1) {
                             foreach ($v1 as $v2) {
