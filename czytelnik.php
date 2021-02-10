@@ -18,24 +18,16 @@ $info = [
     "box_found" => "Nr skrytki użytkownika ",
     "head_info" => "Wprowadź adres email lub nr użytkownika żeby sprawdzić numer swojej skrytki z książkami ",
     "send_button" => "Wyślij",
+    "librarycabinet" => "Książkomat ",
 ];
 
-$costam = [];
-// $tresc = $info['start_user'];
-$costam[0]['box_nr'] = "";
+
+$has_book  = 0;
 
 if (count($_POST) > 0) {
     $user_id_sanitized_int = filter_var($_POST["user_id"], FILTER_VALIDATE_INT);
     $user_id_sanitized_email = filter_var($_POST["user_id"], FILTER_VALIDATE_EMAIL);
     $user_id_sanitized_email = strtolower($user_id_sanitized_email);
-
-    if (is_int($user_id_sanitized_int)) {
-        $sent_condition = "number";
-    } elseif (stristr($user_id_sanitized_email, '@')) {
-        $sent_condition = "email";
-    } else {
-        $sent_condition = "empty";
-    }
 
     $user_id_sanitized = $user_id_sanitized_email . $user_id_sanitized_int;
 
@@ -44,50 +36,39 @@ if (count($_POST) > 0) {
         $stm = $db->prepare('SELECT box_nr FROM "user" where user_id = :user_id ');
         $stm->bindValue(':user_id', $user_id_sanitized);
         $score = $stm->execute();
-
+        $array_loop = "";
         while ($rowy = $score->fetchArray(1)) {
-            $costam[] = $rowy;
-        }
-    } // else {
-    //    $row = "";
-    // }
-
-
-    foreach ($costam as $v1) {
-        foreach ($v1 as $v2) {
-            echo "wynik $v2 <br>\n";
+            $rowy_str = implode($rowy);
+            $array_loop = $array_loop . "<span class='box-number'> " . $rowy_str . " </span>\n";
+            $has_book = 1;
         }
     }
-    
-    // :TODO: dopracować warunki
-    if (is_numeric($costam[0]['box_nr'])) {
+
+    if ($has_book == 1) {
         // user posiada książkę w skrytce
-        $status = "statusoff33";
-        $status1 = "statuson34";
-        foreach ($costam as $v1) {
-            foreach ($v1 as $v2) {
-                $array_loop = $array_loop . "<span class='box-number'>$v2 </span>\n";
-            }
-        }
+        $status = "statusoff";
+        $status1 = "statuson";
         $tresc = "<h3>" . $info['box_found'] . $user_id_sanitized . "</h3>\n" . $array_loop;
-    } elseif (strlen($user_id_sanitized) > 5) { // przejmuje wszystkich
+    } elseif (strlen($user_id_sanitized) > 5) {
         // user dobry skrytki brak
-        $status = "statuson38";
-        $status1 = "statuson39";
+        $status = "statuson";
+        $status1 = "statuson";
         $tresc = "<h3 class='alert'>" . $info['no_user_id'] . $user_id_sanitized . "</h3>";
     } else {
         // user nie przeszedł walidacji /puste /litera /mniej cyfr niż 6
-        $status = "statuson38";
-        $status1 = "statuson39";
+        $status = "statuson";
+        $status1 = "statuson";
         $tresc = "<h3 class='alert'>" . $info['bad_user'] . "</h3>";
     }
 } else {
     // brak danych w zmiennej post
-    $status = "statuson83";
-    $status1 = "statuson84";
+    $status = "statuson";
+    $status1 = "statuson";
     $tresc =  "<h2>" . $info['start_user'] . "</h2>";
 }
 
+$library_name = "nazwa beki";
+$library_adress ="adres ksiazkomatu";
 
 
 ?>
@@ -102,20 +83,20 @@ if (count($_POST) > 0) {
 
 <body>
     <header class="page-header">
-        <h1>Książkomat biblioteka dla dzieci nr 2</h1>
-        <h2>ulica Błotna 44</h2>
+        <h1><?php echo $info['librarycabinet'] . $library_name; ?></h1>
+        <h2><?php echo $library_adress; ?></h2>
     </header>
     <main role="main">
-        <section class="edycja "> <?php echo " staus section 2 " . $status1; ?>
+        <section class="edycja <?php echo $status1; ?>"> 
             <div>
                 <?php echo $tresc; ?>
             </div>
         </section>
-        <section class="edycja"><?php echo " status sekcja 1 " . $status; ?>
+        <section class="edycja <?php echo $status; ?>">
             <form method="post" action="" class="">
                 <div class="flekser">
                     <h4><?php echo $info['head_info']; ?></h4>
-                    <div class=""><input class="" name="user_id" name="id-user"><!-- type="number" -->
+                    <div class=""><input class="" name="user_id" name="id-user">
                     </div>
                 </div>
                 <div>
