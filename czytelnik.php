@@ -23,24 +23,34 @@ $info = [
 
 
 $has_book  = 0;
+$library_name = "nieokreślony";
+$library_address = "";
 
 if (count($_POST) > 0) {
     $user_id_sanitized_int = filter_var($_POST["user_id"], FILTER_VALIDATE_INT);
     $user_id_sanitized_email = filter_var($_POST["user_id"], FILTER_VALIDATE_EMAIL);
     $user_id_sanitized_email = strtolower($user_id_sanitized_email);
-
+    // TODO: additional support for emails from idn domains 
     $user_id_sanitized = $user_id_sanitized_email . $user_id_sanitized_int;
 
     if (is_string($user_id_sanitized)) {
         $db = new MyDB($dbfile);
-        $stm = $db->prepare('SELECT box_nr FROM "user" where user_id = :user_id ');
+        $stm = $db->prepare('SELECT box_nr FROM "user" WHERE user_id = :user_id ');
         $stm->bindValue(':user_id', $user_id_sanitized);
         $score = $stm->execute();
+        // TODO:  add support for multiple library cabinets 
+        $stm = $db->prepare('SELECT unit_name, unit_address FROM unit INNER JOIN user ON user.unit_id = unit.unit_id WHERE user.user_id = :user_id LIMIT 1;');
+        $stm->bindValue(':user_id', $user_id_sanitized);
+        $address = $stm->execute();
         $array_loop = "";
         while ($rowy = $score->fetchArray(1)) {
             $rowy_str = implode($rowy);
             $array_loop = $array_loop . "<span class='box-number'> " . $rowy_str . " </span>\n";
             $has_book = 1;
+        }
+        while ($rowy = $address->fetchArray(1)) {
+            $library_name = ($rowy['unit_name']);
+            $library_address = $rowy['unit_address'];
         }
     }
 
@@ -67,9 +77,6 @@ if (count($_POST) > 0) {
     $tresc =  "<h2>" . $info['start_user'] . "</h2>";
 }
 
-$library_name = "nazwa beki";
-$library_adress ="adres ksiazkomatu";
-
 
 ?>
 <html>
@@ -77,17 +84,17 @@ $library_adress ="adres ksiazkomatu";
 <head>
     <title><?php echo $info['title_info']; ?></title>
 
-    <link rel="stylesheet" type="text/css" href="../style.css" />
+    <link rel="stylesheet" type="text/css" href="./style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
     <header class="page-header">
         <h1><?php echo $info['librarycabinet'] . $library_name; ?></h1>
-        <h2><?php echo $library_adress; ?></h2>
+        <h2><?php echo $library_address; ?></h2>
     </header>
     <main role="main">
-        <section class="edycja <?php echo $status1; ?>"> 
+        <section class="edycja <?php echo $status1; ?>">
             <div>
                 <?php echo $tresc; ?>
             </div>
