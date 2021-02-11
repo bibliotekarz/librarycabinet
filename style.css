@@ -39,11 +39,20 @@
    }
    
    .flekser {
-       display: flex;
-       flex-direction: row;
-       justify-content: space-between;
-       align-items: center;
-   }
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flekserc {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-wrap: wrap;
+}
    
    .box-number {
        font-size: 2.5em;
@@ -74,9 +83,9 @@
    .edycja {
        background: lightgreen;
        color: black;
-       padding: 10px;
-       margin: 10px;
-       max-width: 450px;
+       padding: 1em;
+       margin-bottom: 1em; 
+       /* max-width: 450px; */
    }
    
    .descriptive-container {
@@ -109,4 +118,9 @@
    input[type=checkbox] {
        transform: scale(1.5);
        cursor: pointer;
+   }
+   body{
+       padding: 1em;
+       background-color: bisque;
+       width: 500px;
    }

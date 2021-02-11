@@ -9,7 +9,6 @@ class MyDB extends SQLite3
     }
 }
 
-$user_id_sanitized = 0;
 $info = [
     "title_info" => "Numer skrytki użytkownika ",
     "no_user_id" => "Nie ma skrytki z zawartością dla Użytkownika o identyfikatorze ",
@@ -19,11 +18,12 @@ $info = [
     "head_info" => "Wprowadź adres email lub nr użytkownika żeby sprawdzić numer swojej skrytki z książkami ",
     "send_button" => "Wyślij",
     "librarycabinet" => "Książkomat ",
+    "indefinite" => "nieokreślony."
 ];
 
-
+$user_id_sanitized = 0;
 $has_book  = 0;
-$library_name = "nieokreślony";
+$library_name = $info['indefinite'];
 $library_address = "";
 
 if (count($_POST) > 0) {
@@ -43,35 +43,35 @@ if (count($_POST) > 0) {
         $stm->bindValue(':user_id', $user_id_sanitized);
         $address = $stm->execute();
         $array_loop = "";
-        while ($rowy = $score->fetchArray(1)) {
-            $rowy_str = implode($rowy);
-            $array_loop = $array_loop . "<span class='box-number'> " . $rowy_str . " </span>\n";
+        while ($rows = $score->fetchArray(1)) {
+            $rows_str = implode($rows);
+            $array_loop = $array_loop . "<span class='box-number'> " . $rows_str . " </span>\n";
             $has_book = 1;
         }
-        while ($rowy = $address->fetchArray(1)) {
-            $library_name = ($rowy['unit_name']);
-            $library_address = $rowy['unit_address'];
+        while ($rows = $address->fetchArray(1)) {
+            $library_name = $rows['unit_name'];
+            $library_address = $rows['unit_address'];
         }
     }
 
     if ($has_book == 1) {
-        // user posiada książkę w skrytce
+        // user has the book in the locker 
         $status = "statusoff";
         $status1 = "statuson";
-        $tresc = "<h3>" . $info['box_found'] . $user_id_sanitized . "</h3>\n" . $array_loop;
+        $tresc = "<h3>" . $info['box_found'] . $user_id_sanitized . "</h3><div class=\"flekserc\">\n" . $array_loop . "</div>";
     } elseif (strlen($user_id_sanitized) > 5) {
-        // user dobry skrytki brak
+        // user good locker no 
         $status = "statuson";
         $status1 = "statuson";
         $tresc = "<h3 class='alert'>" . $info['no_user_id'] . $user_id_sanitized . "</h3>";
     } else {
-        // user nie przeszedł walidacji /puste /litera /mniej cyfr niż 6
+        // user has not passed validation / empty / letter / fewer digits than 6 
         $status = "statuson";
         $status1 = "statuson";
         $tresc = "<h3 class='alert'>" . $info['bad_user'] . "</h3>";
     }
 } else {
-    // brak danych w zmiennej post
+    // no post variable 
     $status = "statuson";
     $status1 = "statuson";
     $tresc =  "<h2>" . $info['start_user'] . "</h2>";
@@ -95,7 +95,7 @@ if (count($_POST) > 0) {
     </header>
     <main role="main">
         <section class="edycja <?php echo $status1; ?>">
-            <div>
+            <div class="">
                 <?php echo $tresc; ?>
             </div>
         </section>
