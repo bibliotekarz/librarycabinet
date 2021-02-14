@@ -1,5 +1,6 @@
 <?php
-$dbfile = './librarycabinet.db';
+require 'config.php';
+
 
 class MyDB extends SQLite3
 {
@@ -9,22 +10,7 @@ class MyDB extends SQLite3
     }
 }
 
-$info = [
-    "title_info" => "Numer skrytki użytkownika ",
-    "no_user_id" => "Nie ma skrytki z zawartością dla Użytkownika o identyfikatorze ",
-    "bad_user" => "Nie ma takiego użytkownika. <br>Jako identyfikator użytkownika podaj adres email albo numer użytkownika. ",
-    "start_user" => "Zaczynamy :) ",
-    "box_found" => "Nr skrytki użytkownika ",
-    "head_info" => "Wprowadź adres email lub nr użytkownika żeby sprawdzić numer swojej skrytki z książkami ",
-    "send_button" => "Wyślij",
-    "librarycabinet" => "Książkomat ",
-    "indefinite" => "nieokreślony."
-];
 
-$user_id_sanitized = 0;
-$has_book  = 0;
-$library_name = $info['indefinite'];
-$library_address = "";
 
 if (count($_POST) > 0) {
     $user_id_sanitized_int = filter_var($_POST["user_id"], FILTER_VALIDATE_INT);
