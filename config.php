@@ -8,7 +8,10 @@ $info = [
     "head_info" => "Wprowadź adres email lub nr użytkownika żeby sprawdzić numer swojej skrytki z książkami ",
     "send_button" => "Wyślij",
     "librarycabinet" => "Książkomat ",
-    "indefinite" => "nieokreślony."
+    "indefinite" => "nieokreślony.",
+    "librarian_title"=> "Serwis techniczny książkomatu",
+    "login_title"=>"Strona logowania",
+    "login_first"=>"Najpierw się zaloguj"
 ];
 
 $user_id_sanitized = 0;
