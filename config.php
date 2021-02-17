@@ -11,8 +11,12 @@ $info = [
     "indefinite" => "nieokreślony.",
     "librarian_title"=> "Serwis techniczny książkomatu",
     "login_title"=>"Strona logowania",
-    "login_first"=>"Najpierw się zaloguj"
+    "login_first"=>"Najpierw się zaloguj",
+    "login_alert"=>"Zły email lub hasło",
+    "login_name"=>"Email Bibliotekarza",
+    "login_pass"=>"Hasło Bibliotekarza" 
 ];
+// $info['login_name']
 
 $user_id_sanitized = 0;
 $has_book  = 0;
