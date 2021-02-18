@@ -1,0 +1,96 @@
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>mockup strona admina</title>
+    <meta name="description" content="mockup admin" />
+    <link rel="stylesheet" type="text/css" href="../style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+
+<body>
+    <main role="main">
+        <section>
+        <h2 class="">Zarządzanie bibliotekarzami</h2>
+        <div class="edycja">
+            <form name="admin_bibliotekarz" method="post" action="" class="">
+                <div class="flekser">
+                    <label for="bibliotekarz_login">Email bibliotekarza</label>
+                    <input type="email" class="" id="id-bibliotekarz" name="bibliotekarz_login"
+                        value="<!-- z bazy albo puste -->">
+                </div>
+                <div class="flekser">
+                    <label for="bibliotekarz_haslo">Hasło bibliotekarza</label>
+                    <input type="password" class="" id="id-bibliotekarz_haslo" name="bibliotekarz_haslo">
+                </div>
+                <div>
+                    <div>
+                        <input type="radio" id="akcja_dodaj" name="bibliotekarz" value="dodaj">
+                        <label for="akcja_dodaj">Dodaj konto</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="akcja_usun" name="bibliotekarz" value="usun">
+                        <label for="akcja_usun">Usuń konto</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="akcja_aktualizuj" name="bibliotekarz" value="usun">
+                        <label for="akcja_aktualizuj">Aktualizuj hasło</label>
+                    </div>
+                </div><br>
+                <input type="submit" name="submit_bibliotekarz" value="Wyślij">
+            </form>
+        </div>
+            <h3>lista bibliotekarzy</h3>
+            <ul>
+                <li>adrian</li>
+                <li>antoni</li>
+                <li>jarek</li>
+            </ul>
+        </section>
+        
+        <section>
+            <h2 class="">Zarządzanie książkomatami</h2>
+            <div class="edycja">
+                <form name="admin_ksiazkomat" method="post" action="" class="">
+                    <div class="flekser">
+                        <label for="ksiazkomat_name">Nazwa książkomatu</label>
+                        <input type="tekst" class="" id="ksiazkomat-name-id" name="ksiazkomat_name">
+                    </div>
+                    <div class="flekser">
+                        <label for="ksiazkomat_adres">Adres książkomatu</label>
+                        <input type="text" class="" id="ksiazkomat-adres-id" name="ksiazkomat_adres">
+                    </div>
+                    <div class="flekser">
+                        <label for="ksiazkomat_rozmiar">Rozmiar książkomatu</label>
+                        <input type="number" class="" id="ksiazkomat-rozmiar-id" name="ksiazkomat_rozmiar">
+                    </div>
+                    <div>
+                        <div>
+                            <input type="radio" id="akcja_dodaj" name="ksiazkomat" value="dodaj">
+                            <label for="akcja_dodaj">Dodaj książkomat</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="akcja_usun" name="ksiazkomat" value="usun">
+                            <label for="akcja_usun">Usuń książkomat</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="akcja_aktualizuj" name="ksiazkomat" value="usun">
+                            <label for="akcja_aktualizuj">Aktualizuj książkomat</label>
+                        </div>
+                    </div><br>
+                    <input type="submit" name="submit_ksiazkomat" value="Wyślij">
+                </form>
+            </div>
+                <h3>lista książkomatów</h3>
+                <ul>
+                    <li>Beka nr1, ul.wolska 3, skrytek: 40 </li>
+                    <li>Beka nr3, ul.okop 12, skrytek: 12 </li>
+                    <li>Beka nr22, ul.błotna 3, skrytek: 32 </li>
+                </ul>
+            </section>
+    </main>
+</body>
+
+
+</html>

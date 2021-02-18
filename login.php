@@ -27,7 +27,7 @@ if (count($_POST) > 0) {
     }
 }
 if (isset($_SESSION["id"])) {
-    header("Location:librarian.php");
+    header("Location:admin.php");
 }
 ?>
 <html>

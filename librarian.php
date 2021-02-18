@@ -7,7 +7,7 @@ session_start();
 
 <head>
     <title><?php echo $info['librarian_title']; ?></title>
-    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <link rel="stylesheet" type="text/css" href="../style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 

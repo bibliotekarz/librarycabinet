@@ -63,16 +63,8 @@ if (count($_POST) > 0) {
     $tresc =  "<h2>" . $info['start_user'] . "</h2>";
 }
 
-
-?>
-<html>
-
-<head>
-    <title><?php echo $info['title_info']; ?></title>
-
-    <link rel="stylesheet" type="text/css" href="./style.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
+echo $page_head . "\n\t\t<title>" . $info['title_info']; ?></title>
+    </head>
 
 <body>
     <header class="page-header">
