@@ -40,7 +40,10 @@ $has_book  = 0;
 $library_name = $info['indefinite'];
 $library_address = "";
 $dbfile = './librarycabinet.db';
-
+$message = "";
+$all_units = "";
+$all_librarians = "";
+$librarian_action_message ="";
 
 // default page header 
 $page_head = "<!DOCTYPE html>

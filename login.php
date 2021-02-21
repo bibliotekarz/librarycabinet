@@ -19,7 +19,7 @@ if (count($_POST) > 0) {
     $score = $stm->execute();
     $row = $score->fetchArray(1);
 
-// TODO: wywalić Notice: Trying to access array offset on value of type bool
+// TODO: remove Notice: Trying to access array offset on value of type bool
     if (password_verify($_POST["password"], $row['librarian_pass'])) {
         $_SESSION["id"] = $row['librarian_id'];
         $_SESSION["name"] = $row['librarian_name'];

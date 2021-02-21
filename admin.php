@@ -1,7 +1,91 @@
 <?php
 require 'config.php';
 session_start();
+/*
+print_r($_POST);
+echo "<br> powyżej post <bR><bR><bR>";
+print_r($_SESSION);
+echo "<br> powyżej session <bR><bR><bR>";
+*/
 
+$librarian_login_sanitized = filter_input(INPUT_POST, 'librarian_login', FILTER_SANITIZE_EMAIL);
+$librarian_login_sanitized = strtolower($librarian_login_sanitized);
+
+// password hashing 
+$librarian_pass = password_hash($_POST['librarian_pass'], PASSWORD_ARGON2I, ['memory_cost' => 2048, 'time_cost' => 4, 'threads' => 3]);
+
+///////////////////////////////
+
+class MyDB extends SQLite3
+{
+    function __construct($dbfile)
+    {
+        $this->open($dbfile);
+    }
+}
+
+$db = new MyDB($dbfile);
+
+// form handling librarians 
+// 0 add, 1 remove, 2 update
+// TODO: add UNIQUE NOT NULL constraints 
+
+$action_librarian = filter_input(INPUT_POST, 'librarian', FILTER_VALIDATE_INT);
+
+if ($action_librarian === 0) {
+    if (!empty($librarian_login_sanitized) && !empty($_POST['librarian_pass'])) {
+        $stm = $db->prepare("INSERT INTO librarian (librarian_name, librarian_pass) VALUES (:librarian_sanitized, :librarian_pass )");
+        $stm->bindValue(':librarian_sanitized', $librarian_login_sanitized);
+        $stm->bindValue(':librarian_pass', $librarian_pass);
+        $stm->execute();
+        $librarian_action_message = "Dodano konto bibliotekarza " . $librarian_login_sanitized . "<br>";
+    } else {
+        $librarian_action_message_class = "alert";
+        $librarian_action_message = "Niewłaściwy email lub hasło";
+    }
+} elseif ($action_librarian == 1) {
+    if (!empty($librarian_login_sanitized)) {
+        $stm = $db->prepare("DELETE from librarian where librarian_name = :librarian_sanitized");
+        $stm->bindValue(':librarian_sanitized', $librarian_login_sanitized);
+        $stm->execute();
+        $librarian_action_message = "Skasowano konto bibliotekarza " . $librarian_login_sanitized . "<br>";
+    } else {
+        $librarian_action_message_class = "alert";
+        $librarian_action_message = "Wprowadź poprawnie konto do skasowania";
+    }
+} elseif ($action_librarian == 2) {
+    if (!empty($librarian_login_sanitized) && !empty($_POST['librarian_pass'])) {
+        $stm = $db->prepare("UPDATE librarian set librarian_pass = :librarian_pass where librarian_name = :librarian_sanitized");
+        $stm->bindValue(':librarian_sanitized', $librarian_login_sanitized);
+        $stm->bindValue(':librarian_pass', $librarian_pass);
+        $stm->execute();
+        $librarian_action_message = "Zmieniono hasło do konta bibliotekarza " . $librarian_login_sanitized . "<br>";
+    } else {
+        $librarian_action_message_class = "alert";
+        $librarian_action_message = "Niewłaściwy email lub hasło";
+    }
+}
+
+// machine form handling 
+
+// machine list 
+$stm = $db->query("SELECT unit_name, unit_address, number_box FROM unit");
+while ($row = $stm->fetchArray(1)) {
+    $unit_name = $row['unit_name'];
+    $unit_address = $row['unit_address'];
+    $number_box = $row['number_box'];
+    $unit = "<li>" . $unit_name . ". " . $unit_address . ". Skrytek " . $number_box . ".</li>";
+    $all_units .= $unit;
+}
+
+// list of librarians 
+$stm = $db->query("SELECT librarian_name FROM librarian");
+while ($row = $stm->fetchArray(1)) {
+    $librarian_name = $row['librarian_name'];
+    $librarian = "<li>" . $librarian_name . ".</li>";
+    $all_librarians .= $librarian;
+}
+////////////////////
 
 echo $page_head . "\n\t\t<title>" . $info['admin_title']; ?></title>
 </head>
@@ -21,22 +105,25 @@ echo $page_head . "\n\t\t<title>" . $info['admin_title']; ?></title>
             <section>
                 <h2 class=""><?php echo $info['admin_librarian_managment']; ?></h2>
                 <div class="edycja">
+                    <div class="<?php echo $librarian_action_message_class; ?>">
+                        <h2><?php echo $librarian_action_message; ?></h2>
+                    </div>
                     <form name="admin_librarians" method="post" action="" class="">
                         <div class="flekser">
-                            <label for="librarian_login"><?php echo $info['login_name']; ?></label> <input type="email" class="" id="id-librarian_login" name="librarian_login" value="<!-- z bazy albo puste -->">
+                            <label for="librarian_login"><?php echo $info['login_name']; ?></label> <input type="text" class="" id="id-librarian_login" name="librarian_login">
                         </div>
                         <div class="flekser">
                             <label for="librarian_pass"><?php echo $info['login_pass']; ?></label> <input type="password" class="" id="id-librarian_pass" name="librarian_pass">
                         </div>
                         <div>
                             <div>
-                                <input type="radio" id="librarian_add" name="librarian" value="add"> <label for="librarian_add"><?php echo $info['add'] . " " . $info['account']; ?></label>
+                                <input type="radio" id="librarian_add" name="librarian" value="0"> <label for="librarian_add"><?php echo $info['add'] . " " . $info['account']; ?></label>
                             </div>
                             <div>
-                                <input type="radio" id="librarian_remove" name="librarian" value="remove"> <label for="librarian_remove"><?php echo $info['remove'] . " " . $info['account']; ?></label>
+                                <input type="radio" id="librarian_remove" name="librarian" value="1"> <label for="librarian_remove"><?php echo $info['remove'] . " " . $info['account']; ?></label>
                             </div>
                             <div>
-                                <input type="radio" id="librarian_update" name="librarian" value="update"> <label for="librarian_update"><?php echo $info['update'] . " " . $info['password']; ?></label>
+                                <input type="radio" id="librarian_update" name="librarian" value="2"> <label for="librarian_update"><?php echo $info['update'] . " " . $info['password']; ?></label>
                             </div>
                         </div><br>
                         <input type="submit" name="librarian_submit" value="<?php echo $info['send_button']; ?>">
@@ -44,9 +131,7 @@ echo $page_head . "\n\t\t<title>" . $info['admin_title']; ?></title>
                 </div>
                 <h3><?php echo $info['admin_list_librarians']; ?></h3>
                 <ul>
-                    <li>adrian</li>
-                    <li>antoni</li>
-                    <li>jarek</li>
+                    <?php echo $all_librarians; ?>
                 </ul>
             </section>
 
@@ -68,15 +153,15 @@ echo $page_head . "\n\t\t<title>" . $info['admin_title']; ?></title>
                         </div>
                         <div>
                             <div>
-                                <input type="radio" id="machine_add" name="machine" value="add">
+                                <input type="radio" id="machine_add" name="machine" value="0">
                                 <label for="machine_add"><?php echo $info['add'] . " " . $info['machine']; ?></label>
                             </div>
                             <div>
-                                <input type="radio" id="machine_remove" name="machine" value="remove">
+                                <input type="radio" id="machine_remove" name="machine" value="1">
                                 <label for="machine_remove"><?php echo $info['remove'] . " " . $info['machine']; ?></label>
                             </div>
                             <div>
-                                <input type="radio" id="machine_update" name="machine" value="update">
+                                <input type="radio" id="machine_update" name="machine" value="2">
                                 <label for="machine_update"><?php echo $info['update'] . " " . $info['machine']; ?></label>
                             </div>
                         </div><br>
@@ -85,9 +170,7 @@ echo $page_head . "\n\t\t<title>" . $info['admin_title']; ?></title>
                 </div>
                 <h3><?php echo $info['admin_list_machines']; ?></h3>
                 <ul>
-                    <li>Beka nr1, ul.wolska 3, skrytek: 40 </li>
-                    <li>Beka nr3, ul.okop 12, skrytek: 12 </li>
-                    <li>Beka nr22, ul.błotna 3, skrytek: 32 </li>
+                    <?php echo $all_units; ?>
                 </ul>
             </section>
         </main>
@@ -104,22 +187,3 @@ echo $page_head . "\n\t\t<title>" . $info['admin_title']; ?></title>
 </body>
 
 </html>
-
-
-
-
-
-<?php
-// register.php
-//$pepper = getConfigVariable("pepper");
-$_POST['password'] = "aa";
-$pwd = $_POST['password'];
-$pwd_hashed = password_hash($pwd, PASSWORD_ARGON2ID);
-echo  "<br>" . $_POST['password'] . " <-- hasło <br> " . $pwd_hashed . "<-- hashed <br>";
-// add_user_to_database($username, $pwd_hashed);
-if (password_verify($pwd, $pwd_hashed)) {
-    echo 'Password hash ' . $pwd_hashed . ' is valid!';
-} else {
-    echo 'Invalid password.';
-}
-?>
