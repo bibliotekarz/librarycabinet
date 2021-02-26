@@ -23,9 +23,11 @@ $info = [
     "admin_managing_machines"=>"Zarządzanie książkomatami",
     "admin_list_librarians"=> "Lista bibliotekarzy",
     "admin_list_machines"=> "Lista książkomatów",
+    "admin_machine_id"=>"Id książkomatu",
     "admin_machine_name"=>"Nazwa książkomatu",
     "admin_machine_address"=>"Adres książkomatu",
-    "admin_machine_size"=>"Rozmiar książkomatu",
+    "admin_machine_size"=>"Ilość skrytek",
+    "admin_machine_column"=> "Ilość kolumn",
     "account"=>"konto",
     "password"=>"hasło",
     "machine"=>"książkomat",
@@ -44,6 +46,7 @@ $message = "";
 $all_units = "";
 $all_librarians = "";
 $librarian_action_message ="";
+$machine_action_message ="";
 
 // default page header 
 $page_head = "<!DOCTYPE html>
