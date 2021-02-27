@@ -8,10 +8,12 @@ print_r($_SESSION);
 echo "<br> powyżej session <bR><bR><bR>";
 */
 
+
 $librarian_login_sanitized = filter_input(INPUT_POST, 'librarian_login', FILTER_SANITIZE_EMAIL);
 $librarian_login_sanitized = strtolower($librarian_login_sanitized);
 
-// TODO: remove Notice: Undefined index: librarian_pass
+// TODO: remove Notice: Undefined index: librarian_pass line 19 (after logging in)
+// TODO: Notice: Undefined index: librarian_pass line 19 (without login)
 
 // password hashing 
 $librarian_pass = password_hash($_POST['librarian_pass'], PASSWORD_ARGON2I, ['memory_cost' => 2048, 'time_cost' => 4, 'threads' => 3]);
@@ -44,24 +46,24 @@ if ($action_librarian === 0) {
             $stm->bindValue(':librarian_sanitized', $librarian_login_sanitized);
             $stm->bindValue(':librarian_pass', $librarian_pass);
             $stm->execute();
-            $librarian_action_message = "Dodano konto bibliotekarza " . $librarian_login_sanitized . "<br>";
+            $librarian_action_message = $info['add_librarian_account'] . $librarian_login_sanitized . "<br>";
         } else {
-            $librarian_action_message = "Istnieje już konto bibliotekarza " . $librarian_login_sanitized . "<br>";
+            $librarian_action_message = $info['account_exists'] . $librarian_login_sanitized . "<br>";
         }
     } else {
 
         $librarian_action_message_class = "alert";
-        $librarian_action_message = "Niewłaściwy email lub hasło";
+        $librarian_action_message = $info['wrong_email_password'];
     }
 } elseif ($action_librarian == 1) {
     if (!empty($librarian_login_sanitized)) {
         $stm = $db->prepare("DELETE from librarian where librarian_name = :librarian_sanitized");
         $stm->bindValue(':librarian_sanitized', $librarian_login_sanitized);
         $stm->execute();
-        $librarian_action_message = "Skasowano konto bibliotekarza " . $librarian_login_sanitized . "<br>";
+        $librarian_action_message = $info['account_deleted'] . $librarian_login_sanitized . "<br>";
     } else {
         $librarian_action_message_class = "alert";
-        $librarian_action_message = "Wprowadź poprawnie konto do skasowania";
+        $librarian_action_message = $info['enter_correctly_account'];
     }
 } elseif ($action_librarian == 2) {
     if (!empty($librarian_login_sanitized) && !empty($_POST['librarian_pass'])) {
@@ -72,13 +74,13 @@ if ($action_librarian === 0) {
             $stm->bindValue(':librarian_sanitized', $librarian_login_sanitized);
             $stm->bindValue(':librarian_pass', $librarian_pass);
             $stm->execute();
-            $librarian_action_message = "Zmieniono hasło do konta bibliotekarza " . $librarian_login_sanitized . "<br>";
+            $librarian_action_message = $info['password_librarian_changed'] . $librarian_login_sanitized . "<br>";
         } else {
-            $librarian_action_message = "Nie istnieje konto bibliotekarza " . $librarian_login_sanitized . "<br>";
+            $librarian_action_message = $info['account_not_exist'] . $librarian_login_sanitized . "<br>";
         }
     } else {
         $librarian_action_message_class = "alert";
-        $librarian_action_message = "Niewłaściwy email lub hasło";
+        $librarian_action_message = $info['wrong_email_password'];
     }
 }
 
@@ -103,11 +105,11 @@ if ($action_machine === 0) {
         $stm->bindValue(':unit_size', $unit_size);
         $stm->bindValue(':unit_column', $unit_column);
         $stm->execute();
-        $machine_action_message = "Dodano książkomat \"" . $unit_name . "\"<br>";
+        $machine_action_message = $info['machine_added'] . $unit_name . "<br>";
     } else {
 
         $machine_action_message_class = "alert";
-        $machine_action_message = "BŁAD nie wszystkie dane wprowadzono poprawnie.";
+        $machine_action_message = $info['not_all_data_entered_correctly'];
     }
 } elseif ($action_machine == 1) {
     // TODO: block the removal of all machiness 
@@ -118,14 +120,14 @@ if ($action_machine === 0) {
             $stm = $db->prepare("DELETE from unit where unit_id = :unit_id");
             $stm->bindValue(':unit_id', $unit_id);
             $stm->execute();
-            $machine_action_message = "Skasowano książkomat o id: "  . $unit_id . "<br>";
+            $machine_action_message = $info['machine_deleted']  . $unit_id . "<br>";
         } else {
             $machine_action_message_class = "alert";
-            $machine_action_message = "Nie książkomatu o id: "  . $unit_id . "<br>";
+            $machine_action_message = $info['no_machine_with_id'] . $unit_id . "<br>";
         }
     } else {
         $machine_action_message_class = "alert";
-        $machine_action_message = "Wprowadź poprawne id książkomatu do skasowania";
+        $machine_action_message = $info['enter_correct_id_machine'];
     }
 } elseif ($action_machine == 2) {
     if (!empty($unit_id) && !empty($unit_name) && !empty($unit_address) && !empty($unit_size) && !empty($unit_column)) {
@@ -139,13 +141,13 @@ if ($action_machine === 0) {
             $stm->bindValue(':unit_size', $unit_size);
             $stm->bindValue(':unit_column', $unit_column);
             $stm->execute();
-            $machine_action_message = "Zmieniono dane książkomatu " . $unit_id . "<br>";
+            $machine_action_message = $info['machine_data_changed'] . $unit_id . "<br>";
         } else {
-            $machine_action_message = "Nie istnieje książkomat " . $unit_id . "<br>";
+            $machine_action_message = $info['no_machine'] . $unit_id . "<br>";
         }
     } else {
         $machine_action_message_class = "alert";
-        $machine_action_message = "Błąd w podanych danych.";
+        $machine_action_message = $info['not_all_data_entered_correctly'];
     }
 }
 
@@ -157,7 +159,7 @@ while ($row = $stm->fetchArray(1)) {
     $unit_name = $row['unit_name'];
     $unit_address = $row['unit_address'];
     $unit_size = $row['number_box'];
-    $unit = "<li>" . $unit_id . " " . $unit_name . ". " . $unit_address . ". Skrytek " . $unit_size . ".</li>";
+    $unit = "<li>" . $info['id'] . $unit_id . ". " . $unit_name . ". " . $unit_address . $info['lockers'] . $unit_size . ".</li>";
     $all_units .= $unit;
 }
 
@@ -170,7 +172,7 @@ while ($row = $stm->fetchArray(1)) {
 }
 ////////////////////
 
-// TODO: add field deactivation in js depending on the clicked radiobutton 
+// TODO: Notice: Undefined index: name  line 181 (without login)
 
 echo $page_head . "\n\t\t<title>" . $info['admin_title']; ?></title>
 </head>
@@ -282,7 +284,7 @@ echo $page_head . "\n\t\t<title>" . $info['admin_title']; ?></title>
     }
 
     ?>
-
+<script  src="./script.js"></script>
 </body>
 
 </html>

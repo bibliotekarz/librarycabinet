@@ -33,15 +33,31 @@ $info = [
     "machine"=>"książkomat",
     "add"=>"Dodaj",
     "remove"=>"Usuń",
-    "update"=>"Aktualizuj"
+    "update"=>"Aktualizuj",
+    "id"=>" Id. ",
+    "add_librarian_account"=>"Dodano konto bibliotekarza ",
+    "account_exists"=>"Istnieje już konto bibliotekarza ",
+    "wrong_email_password"=>"Niewłaściwy email lub hasło",
+    "account_deleted"=>"Skasowano konto bibliotekarza ",
+    "enter_correctly_account"=>"Wprowadź poprawnie konto do skasowania",
+    "password_librarian_changed"=>"Zmieniono hasło do konta bibliotekarza ",
+    "account_not_exist"=>"Nie istnieje konto bibliotekarza ",
+    "machine_added"=>"Dodano książkomat ",
+    "not_all_data_entered_correctly"=>"BŁAD nie wszystkie dane wprowadzono poprawnie.",
+    "machine_deleted"=>"Skasowano książkomat o id: ",
+    "no_machine_with_id"=>"Nie ma książkomatu o id: ",
+    "enter_correct_id_machine"=>"Wprowadź poprawne id książkomatu do skasowania",
+    "machine_data_changed"=>"Zmieniono dane książkomatu ",
+    "no_machine"=>"Nie istnieje książkomat ",
+    "lockers"=>". Skrytek "
 ];
-// $info['login_name']
+// $info['lockers']
 
 $user_id_sanitized = 0;
 $has_book  = 0;
 $library_name = $info['indefinite'];
 $library_address = "";
-$dbfile = './librarycabinet.db';
+$dbfile = '../librarycabinet.db';
 $message = "";
 $all_units = "";
 $all_librarians = "";
@@ -53,5 +69,5 @@ $page_head = "<!DOCTYPE html>
 <html lang=\"pl-PL\">
     <head>
         <meta charset=\"UTF-8\" />
-        <link rel=\"stylesheet\" type=\"text/css\" href=\"./style.css\" />
+        <link rel=\"stylesheet\" type=\"text/css\" href=\"../style.css\" />
         <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">";
