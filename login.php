@@ -1,5 +1,6 @@
 <?php
 require 'config.php';
+
 session_start();
 
 if (count($_POST) > 0) {
@@ -19,11 +20,14 @@ if (count($_POST) > 0) {
     $score = $stm->execute();
     $row = $score->fetchArray(1);
 
-// TODO: remove Notice: Trying to access array offset on value of type bool
-    if (password_verify($_POST["password"], $row['librarian_pass'])) {
-        $_SESSION["id"] = $row['librarian_id'];
-        $_SESSION["name"] = $row['librarian_name'];
-        $_SESSION["pass"] = $row['librarian_pass'];
+    if (strlen($_POST['password']) > 0 && strlen($user_id_sanitized) > 0) {
+        if (password_verify($_POST["password"], $row['librarian_pass'])) {
+            $_SESSION["id"] = $row['librarian_id'];
+            $_SESSION["name"] = $row['librarian_name'];
+            $_SESSION["pass"] = $row['librarian_pass'];
+        } else {
+            $message = "<h3 class='alert'>" . $info['login_alert'] . "</h3>";
+        }
     } else {
         $message = "<h3 class='alert'>" . $info['login_alert'] . "</h3>";
     }

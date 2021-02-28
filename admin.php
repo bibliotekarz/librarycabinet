@@ -12,12 +12,10 @@ echo "<br> powyżej session <bR><bR><bR>";
 $librarian_login_sanitized = filter_input(INPUT_POST, 'librarian_login', FILTER_SANITIZE_EMAIL);
 $librarian_login_sanitized = strtolower($librarian_login_sanitized);
 
-// TODO: remove Notice: Undefined index: librarian_pass line 19 (after logging in)
-// TODO: Notice: Undefined index: librarian_pass line 19 (without login)
-
 // password hashing 
-$librarian_pass = password_hash($_POST['librarian_pass'], PASSWORD_ARGON2I, ['memory_cost' => 2048, 'time_cost' => 4, 'threads' => 3]);
-
+if (isset($_POST['librarian_pass'])) {
+    $librarian_pass = password_hash($_POST['librarian_pass'], PASSWORD_ARGON2I, ['memory_cost' => 2048, 'time_cost' => 4, 'threads' => 3]);
+}
 ///////////////////////////////
 
 class MyDB extends SQLite3
@@ -56,16 +54,24 @@ if ($action_librarian === 0) {
         $librarian_action_message = $info['wrong_email_password'];
     }
 } elseif ($action_librarian == 1) {
-    if (!empty($librarian_login_sanitized)) {
-        $stm = $db->prepare("DELETE from librarian where librarian_name = :librarian_sanitized");
-        $stm->bindValue(':librarian_sanitized', $librarian_login_sanitized);
-        $stm->execute();
-        $librarian_action_message = $info['account_deleted'] . $librarian_login_sanitized . "<br>";
-    } else {
+    // TODO: deletes perpetual accounts 
+    $count_all_librarian = $db->querySingle("SELECT COUNT(*) as count FROM librarian");
+    if ($count_all_librarian <= 1) {
         $librarian_action_message_class = "alert";
-        $librarian_action_message = $info['enter_correctly_account'];
+        $librarian_action_message = $info['last_librarian'] . "<br>";
+    } else {
+        if (!empty($librarian_login_sanitized)) {
+            $stm = $db->prepare("DELETE from librarian where librarian_name = :librarian_sanitized");
+            $stm->bindValue(':librarian_sanitized', $librarian_login_sanitized);
+            $stm->execute();
+            $librarian_action_message = $info['account_deleted'] . $librarian_login_sanitized . "<br>";
+        } else {
+            $librarian_action_message_class = "alert";
+            $librarian_action_message = $info['enter_correctly_account'];
+        }
     }
 } elseif ($action_librarian == 2) {
+
     if (!empty($librarian_login_sanitized) && !empty($_POST['librarian_pass'])) {
         // TODO: redo to prepare 
         $count_user = $db->querySingle("SELECT COUNT(*) as count FROM librarian WHERE librarian_name = '$librarian_login_sanitized'");
@@ -112,23 +118,29 @@ if ($action_machine === 0) {
         $machine_action_message = $info['not_all_data_entered_correctly'];
     }
 } elseif ($action_machine == 1) {
-    // TODO: block the removal of all machiness 
-    if (!empty($unit_id)) {
-        $count_machine = $db->querySingle("SELECT COUNT(*) as count FROM unit WHERE unit_id = '$unit_id'");
-        if ($count_machine > 0) {
+    $count_all_machines = $db->querySingle("SELECT COUNT(*) as count FROM unit");
 
-            $stm = $db->prepare("DELETE from unit where unit_id = :unit_id");
-            $stm->bindValue(':unit_id', $unit_id);
-            $stm->execute();
-            $machine_action_message = $info['machine_deleted']  . $unit_id . "<br>";
+    if ($count_all_machines <= 1) {
+        $machine_action_message_class = "alert";
+        $machine_action_message = $info['last_machine'] . "<br>";
+    } else {
+        if (!empty($unit_id)) {
+            $count_machine = $db->querySingle("SELECT COUNT(*) as count FROM unit WHERE unit_id = '$unit_id'");
+            if ($count_machine > 0) {
+
+                $stm = $db->prepare("DELETE from unit where unit_id = :unit_id");
+                $stm->bindValue(':unit_id', $unit_id);
+                $stm->execute();
+                $machine_action_message = $info['machine_deleted']  . $unit_id . "<br>";
+            } else {
+                $machine_action_message_class = "alert";
+                $machine_action_message = $info['no_machine_with_id'] . $unit_id . "<br>";
+            }
         } else {
             $machine_action_message_class = "alert";
-            $machine_action_message = $info['no_machine_with_id'] . $unit_id . "<br>";
+            $machine_action_message = $info['enter_correct_id_machine'];
         }
-    } else {
-        $machine_action_message_class = "alert";
-        $machine_action_message = $info['enter_correct_id_machine'];
-    }
+    } /// esaesa
 } elseif ($action_machine == 2) {
     if (!empty($unit_id) && !empty($unit_name) && !empty($unit_address) && !empty($unit_size) && !empty($unit_column)) {
         // TODO: redo to prepare 
@@ -172,14 +184,12 @@ while ($row = $stm->fetchArray(1)) {
 }
 ////////////////////
 
-// TODO: Notice: Undefined index: name  line 181 (without login)
-
 echo $page_head . "\n\t\t<title>" . $info['admin_title']; ?></title>
 </head>
 
 <body>
     <?php
-    if ($_SESSION["name"]) {
+    if (isset($_SESSION["name"])) {
 
     ?>
         <header class="page-header">
@@ -230,9 +240,6 @@ echo $page_head . "\n\t\t<title>" . $info['admin_title']; ?></title>
                     </div>
                     <form name="admin_machines" method="post" action="" class="">
                         <div class="flekser">
-                            <!--- span><?php // echo $info['admin_machine_id']; 
-                                        ?></span><span><strong> <?php // echo $unit_id; 
-                                                                                                        ?></strong></span --->
                             <label for="machine_id"><?php echo $info['admin_machine_id']; ?></label>
                             <input type="tekst" class="" id="id-machine_id" name="machine_id">
                         </div>
@@ -284,7 +291,7 @@ echo $page_head . "\n\t\t<title>" . $info['admin_title']; ?></title>
     }
 
     ?>
-<script  src="./script.js"></script>
+    <script src="./script.js"></script>
 </body>
 
 </html>

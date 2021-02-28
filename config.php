@@ -49,7 +49,9 @@ $info = [
     "enter_correct_id_machine"=>"Wprowadź poprawne id książkomatu do skasowania",
     "machine_data_changed"=>"Zmieniono dane książkomatu ",
     "no_machine"=>"Nie istnieje książkomat ",
-    "lockers"=>". Skrytek "
+    "lockers"=>". Skrytek ",
+    "last_machine"=>"Nie możesz skasować ostatniego książkomatu.",
+    "last_librarian"=>"Nie możesz skasować ostatniego bibliotekarza."
 ];
 // $info['lockers']
 
