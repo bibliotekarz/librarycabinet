@@ -16,7 +16,7 @@ $info = [
     "login_name" => "Email Bibliotekarza",
     "login_pass" => "Hasło Bibliotekarza",
     "admin_title" => "Strona administracji",
-    "admin_message" => "Strona zarządzania bibliotekarzami i lokalizacjami książkomatów",
+    "admin_message" => "Zarządzanie bibliotekarzami i lokalizacjami książkomatów.",
     "admin_login_info" => "Jesteś zalogowany jako ",
     "admin_logout" => "Kliknij żeby się <a href='logout.php' title='Logout'>wylogować.</a>",
     "admin_librarian_managment"=>"Zarządzanie bibliotekarzami",
@@ -51,7 +51,14 @@ $info = [
     "no_machine"=>"Nie istnieje książkomat ",
     "lockers"=>". Skrytek ",
     "last_machine"=>"Nie możesz skasować ostatniego książkomatu.",
-    "last_librarian"=>"Nie możesz skasować ostatniego bibliotekarza."
+    "last_librarian"=>"Nie możesz skasować ostatniego bibliotekarza.",
+    "machine_title"=>"Strona zarządzania skrytkami w książkomacie.",
+    "machine_message"=>"Zarządzanie skrytkami w książkomacie.",
+    "login_message"=>"Zaloguj sie do systemu obsługi książkomatów.",
+    "admin_page"=>"<a href='admin.php' title='Zarządzaj bibliotekarzami i książkomatami'>Zarządzaj bibliotekarzami i książkomatami.</a>",
+    "machine_page"=>"<a href='machine.php' title='Zarządzaj bibliotekarzami i książkomatami'>Zarządzaj skrytkami w książkomacie.</a>",
+    "select_machine"=>"Wybierz książkomat",
+    "default_machine"=>"Domyślny książkomat"
 ];
 // $info['lockers']
 

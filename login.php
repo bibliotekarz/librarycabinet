@@ -21,6 +21,7 @@ if (count($_POST) > 0) {
     $row = $score->fetchArray(1);
 
     if (strlen($_POST['password']) > 0 && strlen($user_id_sanitized) > 0) {
+        // TODO: Notice: Trying to access array offset on value of type bool line 24 (librarian is not in database)
         if (password_verify($_POST["password"], $row['librarian_pass'])) {
             $_SESSION["id"] = $row['librarian_id'];
             $_SESSION["name"] = $row['librarian_name'];
@@ -34,15 +35,17 @@ if (count($_POST) > 0) {
 }
 if (isset($_SESSION["id"])) {
 
-    header("Location:admin.php");
+    header("Location:machine.php");
 }
 
 echo $page_head . "\n\t\t<title>" . $info['login_title']; ?></title>
 </head>
 
 <body>
+<header class="page-header">
+                <h1><?php echo $info['login_message']; ?></h1>
+            </header>
     <main role="main">
-        <h3 class=""><?php echo $info['login_title']; ?></h3>
         <section class="edycja">
             <form name="login" method="post" action="" class="">
                 <?php echo ($message != "") ? $message : ''; ?>

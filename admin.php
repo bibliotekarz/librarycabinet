@@ -140,7 +140,7 @@ if ($action_machine === 0) {
             $machine_action_message_class = "alert";
             $machine_action_message = $info['enter_correct_id_machine'];
         }
-    } /// esaesa
+    }
 } elseif ($action_machine == 2) {
     if (!empty($unit_id) && !empty($unit_name) && !empty($unit_address) && !empty($unit_size) && !empty($unit_column)) {
         // TODO: redo to prepare 
@@ -195,8 +195,13 @@ echo $page_head . "\n\t\t<title>" . $info['admin_title']; ?></title>
         <header class="page-header">
             <h1><?php echo $info['admin_message']; ?></h1>
             <?php echo $info['admin_login_info'] . " <b>" . $_SESSION['name']; ?></b>.<br>
-            <?php echo $info['admin_logout']; ?><br>
         </header>
+        <nav>
+            <ul>
+                <li><?php echo $info['admin_logout']; ?></li>
+                <li><?php echo $info['machine_page']; ?></li>
+            </ul>
+        </nav>
 
         <main role="main">
             <section>
