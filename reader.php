@@ -1,7 +1,11 @@
 <?php
 require 'config.php';
-
-
+/*
+print_r($_POST);
+echo "<br> powyżej post <bR><bR><bR>";
+print_r($_SESSION);
+echo "<br> powyżej session <bR><bR><bR>";
+*/
 class MyDB extends SQLite3
 {
     function __construct($dbfile)
@@ -13,11 +17,22 @@ class MyDB extends SQLite3
 
 
 if (count($_POST) > 0) {
-    $user_id_sanitized_int = filter_var($_POST["user_id"], FILTER_VALIDATE_INT);
-    $user_id_sanitized_email = filter_var($_POST["user_id"], FILTER_VALIDATE_EMAIL);
-    $user_id_sanitized_email = strtolower($user_id_sanitized_email);
-    // TODO: additional support for emails from idn domains 
-    $user_id_sanitized = $user_id_sanitized_email . $user_id_sanitized_int;
+    $user_id_sanitized_int = filter_input(INPUT_POST, 'user_id', FILTER_SANITIZE_NUMBER_INT);
+
+    // FIXME: To filter IDN domains in emails the server must support "intl" php module 
+    /* 
+    $user_id_email = explode("@", $_POST['user_id']);
+    $host = idn_to_ascii($user_id_email[1]);
+    $user = strtolower($user_id_email[0]);
+    $user_id_processed_email = $user."@".$host;
+    $user_id_filtered_email = filter_var($user_id_processed_email, FILTER_VALIDATE_EMAIL);
+    */
+
+    $user_id_filtered_email = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_EMAIL);
+    $user_id_filtered_email = strtolower($user_id_filtered_email);
+
+    $user_id_sanitized = $user_id_filtered_email . $user_id_sanitized_int;
+
 
     if (is_string($user_id_sanitized)) {
         $db = new MyDB($dbfile);
@@ -64,7 +79,7 @@ if (count($_POST) > 0) {
 }
 
 echo $page_head . "\n\t\t<title>" . $info['title_info']; ?></title>
-    </head>
+</head>
 
 <body>
     <header class="page-header">
