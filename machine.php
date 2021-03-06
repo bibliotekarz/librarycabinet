@@ -23,6 +23,8 @@ class MyDB extends SQLite3
 $db = new MyDB($dbfile);
 
 
+$selected_unit = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+
 // machine list 
 $stm = $db->query("SELECT unit_id, unit_name, unit_address, number_box FROM unit");
 while ($row = $stm->fetchArray(1)) {
@@ -33,15 +35,15 @@ while ($row = $stm->fetchArray(1)) {
     $unit = "<li><a href=\"?id=$unit_id\">$unit_name, $unit_address.</a></li>";
     $all_units .= $unit;
 }
+    $select_machine = $unit_name . " " . $unit_address;
 
-function selected_machine($ror)
-{
-return " wyrysuj książkomat $ror  <br>";
 
+function selected_machine($ror){
+    return " wyrysuj książkomat $ror  <br>";
 }
 
-$selected_unit = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
+    // 
 
 
 if (is_int($selected_unit)) {
@@ -58,8 +60,44 @@ if (is_int($selected_unit)) {
     }
     $all_units = "";
     $unit_template = selected_machine($selected_unit);
+
+////////////////
+// TODO: convert to a function _selected_machine_
+// TODO: rename variables
+// TODO: look for a solution so that the prepare does not make a mistake 
+        $stm1 = $db->query("SELECT * FROM unit Where unit_id = $selected_unit ");
+        // $stm1 = $db->prepare("SELECT * from unit where unit_id = :unit_id");
+        // $stm1->bindValue(':unit_id', $selected_unit);
+        // $stm1->execute();
+
+        while ($row1 = $stm1->fetchArray(1)) {
+            $unit_name1 = $row1['unit_name'];
+            $unit_address1 = $row1['unit_address'];
+            $number_columns1 = $row1['number_columns'];
+            $number_box1 = $row1['number_box'];
+        };
+        $numbox = 1;
+        $k = 1;
+        $r = 0;
+        echo "<div id=\"row_$r\" class=\"edycja\">";
+            while ( $numbox <= $number_box1){
+                echo "<span class=\"machine-box\"> $numbox </span> ";
+                if ($k < $number_columns1){
+                    $k++;
+                    $r++;
+                }else{
+                    $k=1;
+                    echo "</div><div id=\"row_$r\" class=\"edycja\">";
+                }
+                $numbox++;
+            }
+        echo "</div>";
+///////////////
+
 } else {
-    $select_machine =  $info['select_machine'];
+    $select_machine = $info['select_machine'];
+    $unit_template= "";
+
 }
 
 echo $page_head . "\n\t\t<title>" . $info['machine_title']; ?></title>
@@ -85,7 +123,7 @@ echo $page_head . "\n\t\t<title>" . $info['machine_title']; ?></title>
                 <?php echo $all_units; ?>
             </section>
             <section>
-                <h2 class=""><?php echo $unit_template; ?></h2>
+                <h2 class=""><?php echo $unit_template;  ?></h2>
             </section>
         </main>
     <?php
