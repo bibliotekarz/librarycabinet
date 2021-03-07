@@ -34,12 +34,30 @@ $db = new MyDB($dbfile);
 
 $action_librarian = filter_input(INPUT_POST, 'librarian', FILTER_VALIDATE_INT);
 
+function check_user($db, $librarian_login_sanitized){
+    $stm = $db->prepare("SELECT COUNT(*) as count FROM librarian WHERE librarian_name = :librarian_name");
+    $stm->bindValue(':librarian_name', $librarian_login_sanitized);
+    $score = $stm->execute();
+    $count = $score->fetchArray(1)['count'];
+    return $count;
+}
+
+
+function check_machine($db, $unit_id){
+    echo $unit_id . " unit_id we funkcji 47 <br>";
+    $stm = $db->prepare("SELECT COUNT(*) as count FROM unit WHERE unit_id = :unit_id");
+    $stm->bindValue(':unit_id', $unit_id);
+    $score = $stm->execute();
+    $count = $score->fetchArray(1)['count'];
+    return $count;
+}
+
+
 if ($action_librarian === 0) {
     if (!empty($librarian_login_sanitized) && !empty($_POST['librarian_pass'])) {
 
-        // TODO: redo to prepare 
-        $count_user = $db->querySingle("SELECT COUNT(*) as count FROM librarian WHERE librarian_name = '$librarian_login_sanitized'");
-        if ($count_user == 0) {
+        $count_user = check_user($db, $librarian_login_sanitized);
+        if ($count_user == 0 ) {
             $stm = $db->prepare("INSERT INTO librarian (librarian_name, librarian_pass) VALUES (:librarian_sanitized, :librarian_pass )");
             $stm->bindValue(':librarian_sanitized', $librarian_login_sanitized);
             $stm->bindValue(':librarian_pass', $librarian_pass);
@@ -54,7 +72,7 @@ if ($action_librarian === 0) {
         $librarian_action_message = $info['wrong_email_password'];
     }
 } elseif ($action_librarian == 1) {
-    // TODO: deletes perpetual accounts 
+    
     $count_all_librarian = $db->querySingle("SELECT COUNT(*) as count FROM librarian");
     if ($count_all_librarian <= 1) {
         $librarian_action_message_class = "alert";
@@ -73,8 +91,8 @@ if ($action_librarian === 0) {
 } elseif ($action_librarian == 2) {
 
     if (!empty($librarian_login_sanitized) && !empty($_POST['librarian_pass'])) {
-        // TODO: redo to prepare 
-        $count_user = $db->querySingle("SELECT COUNT(*) as count FROM librarian WHERE librarian_name = '$librarian_login_sanitized'");
+        
+        $count_user = check_user($db, $librarian_login_sanitized);
         if ($count_user > 0) {
             $stm = $db->prepare("UPDATE librarian set librarian_pass = :librarian_pass where librarian_name = :librarian_sanitized");
             $stm->bindValue(':librarian_sanitized', $librarian_login_sanitized);
@@ -125,7 +143,8 @@ if ($action_machine === 0) {
         $machine_action_message = $info['last_machine'] . "<br>";
     } else {
         if (!empty($unit_id)) {
-            $count_machine = $db->querySingle("SELECT COUNT(*) as count FROM unit WHERE unit_id = '$unit_id'");
+            
+            $count_machine = check_machine($db, $unit_id);
             if ($count_machine > 0) {
 
                 $stm = $db->prepare("DELETE from unit where unit_id = :unit_id");
@@ -143,8 +162,8 @@ if ($action_machine === 0) {
     }
 } elseif ($action_machine == 2) {
     if (!empty($unit_id) && !empty($unit_name) && !empty($unit_address) && !empty($unit_size) && !empty($unit_column)) {
-        // TODO: redo to prepare 
-        $count_machine = $db->querySingle("SELECT COUNT(*) as count FROM unit WHERE unit_id = '$unit_id'");
+
+        $count_machine = check_machine($db, $unit_id);
         if ($count_machine > 0) {
             $stm = $db->prepare("UPDATE unit set unit_name = :unit_name, unit_address = :unit_address, number_box = :unit_size, number_columns= :unit_column where unit_id = :unit_id ");
             $stm->bindValue(':unit_id', $unit_id);
