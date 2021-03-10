@@ -38,7 +38,7 @@ while ($row = $stm->fetchArray(1)) {
     $counter_unit++;
 }
 
-if ($counter_unit == 1){
+if ($counter_unit == 1) {
     $selected_unit = $unit_id;
 };
 
@@ -57,23 +57,60 @@ function selected_machine($db, $selected_unit)
         $number_columns = $row['number_columns'];
         $number_box = $row['number_box'];
     };
+
     $numbox = 1;
     $k = 1;
     $r = 0;
-    $drawing_start = "\n<div  class=\"edycja\">\n<div id=\"row_$r\">";
+    $drawing_start = "\n<div  class=\"edycja\">\n<!-- div id=\"row_$r\" -->";
     $drawing_body = "";
     while ($numbox <= $number_box) {
-        $drawing_body = $drawing_body . "<span class=\"machine-box\"> $numbox </span> ";
+        ///////// single box content start
+        // TODO: convert to prepare unit_id
+        $score_box = $db->query("SELECT * from user where box_nr = $numbox and unit_id = $selected_unit");
+        //    $stm_box->bindValue(':unit_id', $selected_unit);
+        //    $score_box = $stm_box->execute();
+        $date_insertion = "";
+        $title = "";
+        $access_code = "";
+        $user_id = "";
+        while ($row_box = $score_box->fetchArray(1)) {
+            $date_insertion = $row_box['date_insertion'];
+            $title = $row_box['title'];
+            $access_code = $row_box['access_code'];
+            $user_id = $row_box['user_id'];
+        };
+
+        if (strlen($date_insertion) > 1) {
+            $single_box = "<div class=\"grid-item pelna\">
+        <div class=\"flekser\"><a href=\"edit-box.php?box=$selected_unit&id=$numbox\"><span class=\"box-number\">$numbox</span></a>
+        <div class=\"panel-checkboxes\"><label>skrytka pełna<br><input type=\"checkbox\"></label></div>
+        </div><a href=\"edit-box.php?box=$selected_unit&id=$numbox\" class=\"decoration-none\">
+        <div>tytuł <span class=\"main-data\">$title</span>
+        </div>
+        <div>kod do skrytki <span class=\"main-data\">$access_code</span></div>
+        <div>data opróżnienia <span class=\"highlighted-description\">$date_insertion</span></div>
+        <div>id czytelnika <span class=\"highlighted-description\">$user_id</span></div>
+        </a>\n</div>";
+        } else {
+            $single_box = "<div class=\"grid-item pusta\">
+        <div class=\"flekser\"><a href=\"edit-box.php?box=$selected_unit&id=$numbox\"><span class=\"box-number\">$numbox</span></a>
+        <!-- div class=\"panel-checkboxes\"><label>skrytka pełna<br><input type=\"checkbox\"></label></div -->
+        <p class=\"alert\"><a href=\"edit-box.php?box=$selected_unit&id=$numbox\">Skrytka jest pusta</a></p>
+        </div>
+        </div>";
+        }
+        ///////// single box content end
+        $drawing_body = $drawing_body . "<!-- span class=\"machine-box\" --> $single_box <!-- /span --> ";
         if ($k < $number_columns) {
             $k++;
             $r++;
         } else {
             $k = 1;
-            $drawing_body = $drawing_body . "</div>\n<div id=\"row_$r\">";
+            $drawing_body = $drawing_body . "<!-- /div>\n<div id=\"row_$r\" -->";
         }
         $numbox++;
     }
-    $drawing_stop = "</div></div>\n";
+    $drawing_stop = "<!-- /div --></div>\n";
     $drawing_selected_machine = $drawing_start . $drawing_body . $drawing_stop;
     $unit_info = array($drawing_selected_machine, $unit_name, $unit_address);
 
