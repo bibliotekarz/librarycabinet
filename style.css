@@ -65,7 +65,15 @@
        padding-left: 0.2em;
        padding-right: .2em;
    }
+   
    .machine-box {
+       padding: 10px;
+       margin: 10px;
+       border-bottom: aqua;
+       border-top: aqua;
+       border-top-style: dashed;
+       border-bottom-style: dashed;
+       /* 
     font-size: 1em;
     font-weight: bold;
     border-color: gray;
@@ -74,8 +82,10 @@
     padding-left: .2em;
     padding-right: .2em;
     margin-left: .2em;
-    margin-right: .2em;
+    margin-right: .2em; */
 }
+   }
+   
    .panel-checkboxes {
        font-size: 1em;
        font-weight: normal;
@@ -143,5 +153,5 @@
    body {
        padding: 1em;
        background-color: bisque;
-       width: 500px;
+       max-width: 800px; 
    }

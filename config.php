@@ -58,7 +58,8 @@ $info = [
     "admin_page"=>"<a href='admin.php' title='Zarządzaj bibliotekarzami i książkomatami'>Zarządzaj bibliotekarzami i książkomatami.</a>",
     "machine_page"=>"<a href='machine.php' title='Zarządzaj bibliotekarzami i książkomatami'>Zarządzaj skrytkami w książkomacie.</a>",
     "select_machine"=>"Wybierz książkomat",
-    "default_machine"=>"Domyślny książkomat"
+    "default_machine"=>"Domyślny książkomat",
+    "content_update"=>"Aktualizacja zawartości skrytki"
 ];
 // $info['lockers']
 
@@ -79,4 +80,6 @@ $page_head = "<!DOCTYPE html>
     <head>
         <meta charset=\"UTF-8\" />
         <link rel=\"stylesheet\" type=\"text/css\" href=\"../style.css\" />
-        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">";
+        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
+        <link rel=\"icon\" type=\"image/svg+xml\" href=\"../librarycabinet.svg\">
+        <link rel=\"mask-icon\" href=\"../librarycabinet.svg\" color=\"#66cd00\">";    

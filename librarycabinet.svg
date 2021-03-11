@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="121.24373mm"
+   height="135.46666mm"
+   viewBox="0 0 121.24373 135.46666"
+   version="1.1"
+   id="librarycabinet"
+   inkscape:version="1.0.2-2 (e86c870879, 2021-01-15)"
+   sodipodi:docname="librarycabinet.svg">
+  <title
+     id="title510">librarycabinet ico</title>
+  <defs
+     id="defs467" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="11.2"
+     inkscape:cx="13.176966"
+     inkscape:cy="449.17225"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1057"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0">
+    <sodipodi:guide
+       position="65.106399,17.538089"
+       orientation="0,-1"
+       id="guide501" />
+    <sodipodi:guide
+       position="9.4006461,131.49791"
+       orientation="1,0"
+       id="guide512" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata470">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>librarycabinet ico</dc:title>
+        <cc:license
+           rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>arek@bibliotekarz.com</dc:title>
+          </cc:Agent>
+        </dc:creator>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Warstwa 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-32.360279,-28.272616)">
+    <path
+       style="fill:#66cd00;stroke-width:0.264583"
+       d="M 32.360279,28.272616 V 163.73928 h 13.371247 v -4.36562 h 94.501234 v 4.36562 h 13.37125 V 28.272616 Z m 111.835591,66.712797 -102.429502,-0.008 v -5.52824 l 102.429502,0.14174 z m -3.96311,51.215777 h -8.61128 l 0.28348,-43.17448 h 8.61128 z m -2.3806,-60.042864 -11.12769,-0.07215 -0.26727,-42.649026 11.12769,-0.116835 z M 64.618816,78.997088 h 40.108034 l 0.0391,7.105885 H 64.705164 Z M 102.3124,52.914426 H 64.257965 l -0.118814,-6.102965 37.976159,-0.133635 z m -37.782321,9.991813 h 40.134141 l -0.0864,8.362728 H 64.632659 Z M 109.98774,51.294109 121.4286,51.051746 121.69587,86.17512 110.3495,86.10297 Z M 59.551926,85.913985 47.538624,85.708198 V 46.040055 l 12.013302,0.205785 z m -13.536918,17.676545 7.872493,-2.6e-4 0.07994,42.61092 h -8.235912 z m 14.267545,6.2518 h 10.275656 l 0.20381,36.35886 -10.228409,-1e-5 z m 65.962837,36.35886 -10.07205,0.0661 0.51161,-36.20693 9.97757,-0.0662 z m -49.730122,-43.93362 10.542058,-2.6e-4 v 43.93384 H 76.562515 Z m 21.901251,1.17105 13.056251,-2.6e-4 -7.91433,42.76279 H 91.021903 Z M 144.20187,32.241326 v 5.433748 l -102.440945,1.162097 4.03e-4,-6.595845 z M 41.766377,155.13764 l -5.504165,0.038 0.06682,-122.934284 h 5.431896 v 127.132294 0 z m 0,0 v -5.43375 l 102.429493,-0.0393 v 5.5199 z m 107.802073,0.038 -5.37258,0.009 0.006,-122.943174 h 5.43375 z"
+       id="polka"
+       inkscape:label="#polka"
+       sodipodi:nodetypes="cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc" />
+  </g>
+</svg>

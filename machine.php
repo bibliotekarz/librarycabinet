@@ -81,10 +81,10 @@ function selected_machine($db, $selected_unit)
         };
 
         if (strlen($date_insertion) > 1) {
-            $single_box = "<div class=\"grid-item pelna\">
-        <div class=\"flekser\"><a href=\"edit-box.php?box=$selected_unit&id=$numbox\"><span class=\"box-number\">$numbox</span></a>
-        <div class=\"panel-checkboxes\"><label>skrytka pełna<br><input type=\"checkbox\"></label></div>
-        </div><a href=\"edit-box.php?box=$selected_unit&id=$numbox\" class=\"decoration-none\">
+            $single_box = "<div class=\"machine-box pelna  \">
+        <div class=\"\"><a href=\"edit-box.php?box=$numbox&id=$selected_unit\"><span class=\"box-number\">$numbox</span></a>
+        <!-- div class=\"panel-checkboxes\"><label>skrytka pełna<br><input type=\"checkbox\"></label></div -->
+        </div><a href=\"edit-box.php?box=$numbox&id=$selected_unit\" class=\"decoration-none\">
         <div>tytuł <span class=\"main-data\">$title</span>
         </div>
         <div>kod do skrytki <span class=\"main-data\">$access_code</span></div>
@@ -93,13 +93,15 @@ function selected_machine($db, $selected_unit)
         </a>\n</div>";
         } else {
             $single_box = "<div class=\"grid-item pusta\">
-        <div class=\"flekser\"><a href=\"edit-box.php?box=$selected_unit&id=$numbox\"><span class=\"box-number\">$numbox</span></a>
+        <div class=\"\"><a href=\"edit-box.php?box=$numbox&id=$selected_unit\"><span class=\"box-number\">$numbox</span></a>
         <!-- div class=\"panel-checkboxes\"><label>skrytka pełna<br><input type=\"checkbox\"></label></div -->
-        <p class=\"alert\"><a href=\"edit-box.php?box=$selected_unit&id=$numbox\">Skrytka jest pusta</a></p>
+        <p class=\"alert\"><a href=\"edit-box.php?box=$numbox&id=$selected_unit\">Skrytka jest pusta</a></p>
         </div>
         </div>";
         }
         ///////// single box content end
+
+        // consider whether the column layout makes sense  
         $drawing_body = $drawing_body . "<!-- span class=\"machine-box\" --> $single_box <!-- /span --> ";
         if ($k < $number_columns) {
             $k++;
@@ -175,7 +177,7 @@ echo $page_head . "\n\t\t<title>" . $info['machine_title']; ?></title>
     }
 
     ?>
-    <script src="./script.js"></script>
+    <!-- script src="./script.js"></script -->
 </body>
 
 </html>
