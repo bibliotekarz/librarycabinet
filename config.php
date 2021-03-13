@@ -56,12 +56,19 @@ $info = [
     "machine_message"=>"Zarządzanie skrytkami w książkomacie.",
     "login_message"=>"Zaloguj sie do systemu obsługi książkomatów.",
     "admin_page"=>"<a href='admin.php' title='Zarządzaj bibliotekarzami i książkomatami'>Zarządzaj bibliotekarzami i książkomatami.</a>",
-    "machine_page"=>"<a href='machine.php' title='Zarządzaj bibliotekarzami i książkomatami'>Zarządzaj skrytkami w książkomacie.</a>",
+    "machine_page"=>"<a href='machine.php' title='Zarządzaj skrytkami w książkomacie'>Zarządzaj skrytkami w książkomacie.</a>",
     "select_machine"=>"Wybierz książkomat",
     "default_machine"=>"Domyślny książkomat",
-    "content_update"=>"Aktualizacja zawartości skrytki"
+    "content_update"=>"Aktualizacja zawartości skrytki",
+    "restore_data"=>"Przywróć dane",
+    "book_title"=>"Tytuł",
+    "lockbox_code"=>"Kod do skrytki",
+    "date_emptying"=>"Data opróżnienia",
+    "reader_id"=>"Identyfikator użytkownika",
+    "save_changes"=>"Zapisz zmiany",
+    "clear_fields"=>"Opróżnij skrzynkę"
 ];
-// $info['lockers']
+// $info['machine_page']
 
 $user_id_sanitized = 0;
 $has_book  = 0;

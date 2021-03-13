@@ -28,11 +28,13 @@ class MyDB extends SQLite3
 
 $db = new MyDB($dbfile);
 
-// form handling librarians 
-// 0 add, 1 remove, 2 update
-// TODO: add UNIQUE NOT NULL constraints 
+// librarians' account support form 
 
 $action_librarian = filter_input(INPUT_POST, 'librarian', FILTER_VALIDATE_INT);
+// FIXME: esaesa test
+$librarian_action_message_class="";
+
+// 0 add, 1 remove, 2 update 
 
 function check_user($db, $librarian_login_sanitized){
     $stm = $db->prepare("SELECT COUNT(*) as count FROM librarian WHERE librarian_name = :librarian_name");
@@ -108,10 +110,7 @@ if ($action_librarian === 0) {
     }
 }
 
-// machine form handling 
-
-// 0 add, 1 remove, 2 update
-// TODO: add UNIQUE NOT NULL constraints 
+// machine management form  
 
 $action_machine = filter_input(INPUT_POST, 'machine', FILTER_VALIDATE_INT);
 $unit_id  = filter_input(INPUT_POST, 'machine_id', FILTER_VALIDATE_INT);
@@ -119,6 +118,10 @@ $unit_name = filter_input(INPUT_POST, 'machine_name', FILTER_SANITIZE_STRING);
 $unit_address = filter_input(INPUT_POST, 'machine_address', FILTER_SANITIZE_STRING);
 $unit_size = filter_input(INPUT_POST, 'machine_size', FILTER_VALIDATE_INT);
 $unit_column = filter_input(INPUT_POST, 'machine_column', FILTER_VALIDATE_INT);
+// FIXME: esaesa test
+$machine_action_message_class="";
+
+// 0 add, 1 remove, 2 update
 
 if ($action_machine === 0) {
     if (empty($unit_id) && !empty($unit_name) && !empty($unit_address) && !empty($unit_size) && !empty($unit_column)) {

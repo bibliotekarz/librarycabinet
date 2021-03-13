@@ -2,14 +2,14 @@ CREATE TABLE IF NOT EXISTS "user" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     "date_insertion" DATETIME,
     "title" TEXT,
-    "access_code" INTEGER,
-    "user_id" INTEGER,
+    "access_code" TEXT,
+    "user_id" TEXT,
     "box_nr" INTEGER,
     "unit_id" INTEGER
 );
 CREATE TABLE IF NOT EXISTS "librarian" (
     "librarian_id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    "librarian_name" text,
+    "librarian_name" TEXT NOT NULL UNIQUE,
     "librarian_pass" TEXT,
     "librarian_level" INTEGER
 );

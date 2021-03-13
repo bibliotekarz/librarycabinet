@@ -114,14 +114,13 @@
    .descriptive-container {
        display: grid;
        grid-template-columns: 2fr 3fr;
-       /* repeat(2, [col-start] 1fr); */
        grid-gap: 10px;
        padding-top: 10px;
    }
    
    .descriptive-container-end {
-       display: inline-block;
-       max-width: 170px;
+      /* display: inline-block; */
+      /* max-width: 170px; */
        text-align: right;
    }
    
@@ -146,7 +145,7 @@
    input {
        /*     transform: scale(1.5);*/
        cursor: pointer;
-       margin-top: .5em;
+      /* margin-top: .5em; */
        margin-bottom: .5em;
    }
    
