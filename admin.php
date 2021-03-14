@@ -1,13 +1,6 @@
 <?php
 require 'config.php';
 session_start();
-/*
-print_r($_POST);
-echo "<br> powyżej post <bR><bR><bR>";
-print_r($_SESSION);
-echo "<br> powyżej session <bR><bR><bR>";
-*/
-
 
 $librarian_login_sanitized = filter_input(INPUT_POST, 'librarian_login', FILTER_SANITIZE_EMAIL);
 $librarian_login_sanitized = strtolower($librarian_login_sanitized);
@@ -31,10 +24,8 @@ $db = new MyDB($dbfile);
 // librarians' account support form 
 
 $action_librarian = filter_input(INPUT_POST, 'librarian', FILTER_VALIDATE_INT);
-// FIXME: esaesa test
 $librarian_action_message_class="";
 
-// 0 add, 1 remove, 2 update 
 
 function check_user($db, $librarian_login_sanitized){
     $stm = $db->prepare("SELECT COUNT(*) as count FROM librarian WHERE librarian_name = :librarian_name");
@@ -44,17 +35,7 @@ function check_user($db, $librarian_login_sanitized){
     return $count;
 }
 
-
-function check_machine($db, $unit_id){
-    echo $unit_id . " unit_id we funkcji 47 <br>";
-    $stm = $db->prepare("SELECT COUNT(*) as count FROM unit WHERE unit_id = :unit_id");
-    $stm->bindValue(':unit_id', $unit_id);
-    $score = $stm->execute();
-    $count = $score->fetchArray(1)['count'];
-    return $count;
-}
-
-
+// 0 add, 1 remove, 2 update 
 if ($action_librarian === 0) {
     if (!empty($librarian_login_sanitized) && !empty($_POST['librarian_pass'])) {
 
@@ -110,6 +91,15 @@ if ($action_librarian === 0) {
     }
 }
 
+// list of librarians 
+$stm = $db->query("SELECT librarian_name FROM librarian");
+while ($row = $stm->fetchArray(1)) {
+    $librarian_name = $row['librarian_name'];
+    $librarian = "<li>" . $librarian_name . ".</li>";
+    $all_librarians .= $librarian;
+}
+
+
 // machine management form  
 
 $action_machine = filter_input(INPUT_POST, 'machine', FILTER_VALIDATE_INT);
@@ -118,8 +108,15 @@ $unit_name = filter_input(INPUT_POST, 'machine_name', FILTER_SANITIZE_STRING);
 $unit_address = filter_input(INPUT_POST, 'machine_address', FILTER_SANITIZE_STRING);
 $unit_size = filter_input(INPUT_POST, 'machine_size', FILTER_VALIDATE_INT);
 $unit_column = filter_input(INPUT_POST, 'machine_column', FILTER_VALIDATE_INT);
-// FIXME: esaesa test
 $machine_action_message_class="";
+
+function check_machine($db, $unit_id){
+    $stm = $db->prepare("SELECT COUNT(*) as count FROM unit WHERE unit_id = :unit_id");
+    $stm->bindValue(':unit_id', $unit_id);
+    $score = $stm->execute();
+    $count = $score->fetchArray(1)['count'];
+    return $count;
+}
 
 // 0 add, 1 remove, 2 update
 
@@ -177,6 +174,7 @@ if ($action_machine === 0) {
             $stm->execute();
             $machine_action_message = $info['machine_data_changed'] . $unit_id . "<br>";
         } else {
+            $machine_action_message_class = "alert";
             $machine_action_message = $info['no_machine'] . $unit_id . "<br>";
         }
     } else {
@@ -197,13 +195,7 @@ while ($row = $stm->fetchArray(1)) {
     $all_units .= $unit;
 }
 
-// list of librarians 
-$stm = $db->query("SELECT librarian_name FROM librarian");
-while ($row = $stm->fetchArray(1)) {
-    $librarian_name = $row['librarian_name'];
-    $librarian = "<li>" . $librarian_name . ".</li>";
-    $all_librarians .= $librarian;
-}
+
 ////////////////////
 
 echo $page_head . "\n\t\t<title>" . $info['admin_title']; ?></title>

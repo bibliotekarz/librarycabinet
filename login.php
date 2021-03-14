@@ -20,8 +20,7 @@ if (count($_POST) > 0) {
     $score = $stm->execute();
     $row = $score->fetchArray(1);
 
-    if (strlen($_POST['password']) > 0 && strlen($user_id_sanitized) > 0) {
-        // TODO: Notice: Trying to access array offset on value of type bool line 24 (librarian is not in database)
+    if (strlen($_POST['password']) > 0 && strlen($user_id_sanitized) > 0 && isset($row['librarian_pass'])) {
         if (password_verify($_POST["password"], $row['librarian_pass'])) {
             $_SESSION["id"] = $row['librarian_id'];
             $_SESSION["name"] = $row['librarian_name'];
@@ -42,14 +41,13 @@ echo $page_head . "\n\t\t<title>" . $info['login_title']; ?></title>
 </head>
 
 <body>
-<header class="page-header">
-                <h1><?php echo $info['login_message']; ?></h1>
-            </header>
+    <header class="page-header">
+        <h1><?php echo $info['login_message']; ?></h1>
+    </header>
     <main role="main">
         <section class="edycja">
             <form name="login" method="post" action="" class="">
                 <?php echo ($message != "") ? $message : ''; ?>
-
                 <div class="flekser">
                     <label for="user_name"><?php echo $info['login_name']; ?></label>
                     <input type="text" name="user_name">
@@ -61,7 +59,6 @@ echo $page_head . "\n\t\t<title>" . $info['login_title']; ?></title>
                 <br>
                 <input type="submit" name="submit" value="<?php echo $info['send_button']; ?>">
                 <input type="reset">
-
             </form>
         </section>
     </main>

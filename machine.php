@@ -42,7 +42,7 @@ if ($counter_unit == 1) {
     $selected_unit = $unit_id;
 };
 
-function selected_machine($db, $selected_unit)
+function selected_machine($db, $selected_unit, $info)
 {
     $unit_name = "";
     $unit_address = "";
@@ -65,6 +65,14 @@ function selected_machine($db, $selected_unit)
     $drawing_body = "";
     while ($numbox <= $number_box) {
         ///////// single box content start
+            $stm = $db->prepare("SELECT unit_name, unit_address from unit where unit_id = :unit_id");
+            $stm->bindValue(':unit_id', $selected_unit);
+            $score = $stm->execute();
+
+            while ($row = $score->fetchArray(1)) {
+                $unit_name = $row['unit_name'];
+                $unit_address = $row['unit_address'];
+            };
         // TODO: convert to prepare unit_id
         $score_box = $db->query("SELECT * from user where box_nr = $numbox and unit_id = $selected_unit");
         //    $stm_box->bindValue(':unit_id', $selected_unit);
@@ -80,25 +88,26 @@ function selected_machine($db, $selected_unit)
             $user_id = $row_box['user_id'];
         };
 
+        // TODO: probably in the future, many items will be added to one box
+        // $box_full = "<!-- div class=\"panel-checkboxes\"><label>" . $info['box_full'] . "<br><input type=\"checkbox\"></label></div -->\n";
+        $box_full = "";
         if (strlen($date_insertion) > 1) {
             $single_box = "<div class=\"machine-box pelna  \">
         <div class=\"\"><a href=\"edit-box.php?box=$numbox&id=$selected_unit\"><span class=\"box-number\">$numbox</span></a>
-        <!-- div class=\"panel-checkboxes\"><label>skrytka pełna<br><input type=\"checkbox\"></label></div -->
-        </div><a href=\"edit-box.php?box=$numbox&id=$selected_unit\" class=\"decoration-none\">
-        <div>tytuł <span class=\"main-data\">$title</span>
+        $box_full</div><a href=\"edit-box.php?box=$numbox&id=$selected_unit\" class=\"decoration-none\">
+        <div>" . $info['book_title'] . " <span class=\"main-data\">$title</span>
         </div>
-        <div>kod do skrytki <span class=\"main-data\">$access_code</span></div>
-        <div>data opróżnienia <span class=\"highlighted-description\">$date_insertion</span></div>
-        <div>id czytelnika <span class=\"highlighted-description\">$user_id</span></div>
+        <div>" . $info['lockbox_code'] . " <span class=\"main-data\">$access_code</span></div>
+        <div>" . $info['date_emptying'] . " <span class=\"highlighted-description\">$date_insertion</span></div>
+        <div>" . $info['reader_id'] . " <span class=\"highlighted-description\">$user_id</span></div>
         </a>\n</div>";
         } else {
             $single_box = "<div class=\"grid-item pusta\">
         <div class=\"\"><a href=\"edit-box.php?box=$numbox&id=$selected_unit\"><span class=\"box-number\">$numbox</span></a>
-        <!-- div class=\"panel-checkboxes\"><label>skrytka pełna<br><input type=\"checkbox\"></label></div -->
-        <p class=\"alert\"><a href=\"edit-box.php?box=$numbox&id=$selected_unit\">Skrytka jest pusta</a></p>
-        </div>
-        </div>";
+        $box_full<p class=\"alert\"><a href=\"edit-box.php?box=$numbox&id=$selected_unit\">" . $info['box_empty'] . "</a></p>
+        </div>\n</div>";
         }
+
         ///////// single box content end
 
         // consider whether the column layout makes sense  
@@ -120,7 +129,7 @@ function selected_machine($db, $selected_unit)
     return $unit_info;
 }
 
-$unit_info = selected_machine($db, $selected_unit);
+$unit_info = selected_machine($db, $selected_unit, $info);
 
 $select_machine = $unit_info[1] . " " . $unit_info[2];
 
@@ -177,7 +186,6 @@ echo $page_head . "\n\t\t<title>" . $info['machine_title']; ?></title>
     }
 
     ?>
-    <!-- script src="./script.js"></script -->
 </body>
 
 </html>
