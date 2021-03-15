@@ -38,6 +38,9 @@ $id_user = filter_input(INPUT_POST, 'id_user', FILTER_SANITIZE_STRING);
 $box = filter_input(INPUT_POST, 'box', FILTER_VALIDATE_INT);
 $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 
+if ($selected_unit < 1 || $selected_box < 1){
+    header("Location:machine.php");
+}
 
 $unit_name = "";
 $unit_address = "";

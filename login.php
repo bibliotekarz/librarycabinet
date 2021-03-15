@@ -1,4 +1,5 @@
 <?php
+header("X-Clacks-Overhead: GNU Terry Pratchett");
 require 'config.php';
 
 session_start();
