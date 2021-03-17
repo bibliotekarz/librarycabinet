@@ -1,16 +1,7 @@
 <?php
 require 'config.php';
 session_start();
-/*
-print_r($_POST);
-echo "<br> powyżej post <bR><bR><bR>";
-print_r($_GET);
-echo "<br> powyżej get <bR><bR><bR>";
-print_r($_SESSION);
-echo "<br> powyżej session <bR><bR><bR>";
-*/
 
-///////////////////////////////
 
 class MyDB extends SQLite3
 {
@@ -56,14 +47,13 @@ while ($row = $score->fetchArray(1)) {
 
 function test_box($db, $selected_unit, $selected_box)
 {
-    // TODO: implement prepare 
-    $score_box = $db->query("SELECT * from user where unit_id = $selected_unit");
-    //    $stm_box->bindValue(':unit_id', $selected_unit);
-    //    $score_box = $stm_box->execute();
+    $stm = $db->prepare("SELECT * from user where unit_id = :unit_id");
+    $stm->bindValue(':unit_id', $selected_unit);
+    $score_box = $stm->execute();
 
     $box_nr_all = array();
-    while ($row_box = $score_box->fetchArray(1)) {
-        $box_nr = $row_box['box_nr'];
+    while ($row = $score_box->fetchArray(1)) {
+        $box_nr = $row['box_nr'];
         array_push($box_nr_all, $box_nr);
     }
 
@@ -99,19 +89,20 @@ function insert_box($db, $end_date, $title, $secret_code, $id_user, $box, $id){
 }
 
 function selected_box($db, $selected_unit, $selected_box){
-    // TODO: implement prepare 
-    $score_box = $db->query("SELECT * from user where box_nr = $selected_box and unit_id = $selected_unit");
-    //    $stm_box->bindValue(':unit_id', $selected_unit);
-    //    $score_box = $stm_box->execute();
+    $stm = $db->prepare("SELECT * from user where box_nr = :box_nr and unit_id = :unit_id");
+    $stm->bindValue(':box_nr', $selected_box);
+    $stm->bindValue(':unit_id', $selected_unit);
+    $score_box = $stm->execute();
+
     $date_insertion = "";
     $title = "";
     $access_code = "";
     $user_id = "";
-    while ($row_box = $score_box->fetchArray(1)) {
-        $date_insertion = $row_box['date_insertion'];
-        $title = $row_box['title'];
-        $access_code = $row_box['access_code'];
-        $user_id = $row_box['user_id'];
+    while ($row = $score_box->fetchArray(1)) {
+        $date_insertion = $row['date_insertion'];
+        $title = $row['title'];
+        $access_code = $row['access_code'];
+        $user_id = $row['user_id'];
     }
     $box_data = array($title, $access_code, $date_insertion, $user_id);
     return $box_data;
@@ -119,19 +110,14 @@ function selected_box($db, $selected_unit, $selected_box){
 
 $do_it = test_box($db, $selected_unit, $selected_box);
 
-if (isset($_SESSION["name"]) && $do_it == "update") {
+if (isset($_SESSION["name"]) && $do_it == "update" && isset($box)) {
     update_box($db, $end_date, $title, $secret_code, $id_user, $box, $id);
-} elseif (isset($_SESSION["name"]) && $do_it == "insert" && isset($_POST['box'])) {
+} elseif (isset($_SESSION["name"]) && $do_it == "insert" && isset($box)) {
     insert_box($db, $end_date, $title, $secret_code, $id_user, $box, $id);
-} else {
-    echo "<h1>";
-    echo "wprowadź dane";
-    echo "</h1>";
 }
 
 $box_info = selected_box($db, $selected_unit, $selected_box);
 
-/////////////////////
 
 echo $page_head . "\n\t\t<title>" . $info['machine_title']; ?></title>
 </head>
@@ -139,7 +125,6 @@ echo $page_head . "\n\t\t<title>" . $info['machine_title']; ?></title>
 <body>
     <?php
     if (isset($_SESSION["name"])) {
-        // TODO: implement $info['']
     ?>
         <header class="page-header">
             <h1><?php echo $info['content_update']; ?></h1>
@@ -161,7 +146,7 @@ echo $page_head . "\n\t\t<title>" . $info['machine_title']; ?></title>
 
                     <div class="flekser"><span class="box-number"><?php echo $selected_box; ?></span>
                         <!--  TODO: to make some extra books in one safe  
-                            div class="panel-checkboxes"><label>skrytka pełna<br><input type="checkbox"></label></div -->
+                            div class="panel-checkboxes"><label>box full<br><input type="checkbox"></label></div -->
                         <div class="panel-checkboxes"><input type="reset" id="" value="<?php echo $info['restore_data']; ?>"><br>
                             <input type="button" id="clear_fields" value="<?php echo $info['clear_fields']; ?>">
                         </div>

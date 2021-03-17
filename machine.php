@@ -1,16 +1,7 @@
 <?php
 require 'config.php';
 session_start();
-/*
-print_r($_POST);
-echo "<br> powyżej post <bR><bR><bR>";
-print_r($_GET);
-echo "<br> powyżej get <bR><bR><bR>";
-print_r($_SESSION);
-echo "<br> powyżej session <bR><bR><bR>";
-*/
 
-///////////////////////////////
 
 class MyDB extends SQLite3
 {
@@ -65,18 +56,20 @@ function selected_machine($db, $selected_unit, $info)
     $drawing_body = "";
     while ($numbox <= $number_box) {
         ///////// single box content start
-            $stm = $db->prepare("SELECT unit_name, unit_address from unit where unit_id = :unit_id");
-            $stm->bindValue(':unit_id', $selected_unit);
-            $score = $stm->execute();
+        $stm = $db->prepare("SELECT unit_name, unit_address from unit where unit_id = :unit_id");
+        $stm->bindValue(':unit_id', $selected_unit);
+        $score = $stm->execute();
 
-            while ($row = $score->fetchArray(1)) {
-                $unit_name = $row['unit_name'];
-                $unit_address = $row['unit_address'];
-            };
-        // TODO: convert to prepare unit_id
-        $score_box = $db->query("SELECT * from user where box_nr = $numbox and unit_id = $selected_unit");
-        //    $stm_box->bindValue(':unit_id', $selected_unit);
-        //    $score_box = $stm_box->execute();
+        while ($row = $score->fetchArray(1)) {
+            $unit_name = $row['unit_name'];
+            $unit_address = $row['unit_address'];
+        };
+
+        $stm_box = $db->prepare("SELECT * from user where box_nr = :numbox and unit_id = :unit_id");
+        $stm_box->bindValue(':numbox', $numbox);
+        $stm_box->bindValue(':unit_id', $selected_unit);
+        $score_box = $stm_box->execute();
+
         $date_insertion = "";
         $title = "";
         $access_code = "";
@@ -145,8 +138,6 @@ if (is_int($selected_unit)) {
     $select_machine_after = "";
 }
 
-
-/////////////////////
 
 echo $page_head . "\n\t\t<title>" . $info['machine_title']; ?></title>
 </head>
