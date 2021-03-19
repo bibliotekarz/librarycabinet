@@ -1,12 +1,11 @@
 <?php
 header("X-Clacks-Overhead: GNU Terry Pratchett");
 require 'config.php';
-/*
+
 print_r($_POST);
 echo "<br> powyżej post <bR><bR><bR>";
-print_r($_SESSION);
-echo "<br> powyżej session <bR><bR><bR>";
-*/
+
+
 class MyDB extends SQLite3
 {
     function __construct($dbfile)
@@ -15,7 +14,31 @@ class MyDB extends SQLite3
     }
 }
 
+$db = new MyDB($dbfile);
 
+function unit_name($db, $user_id_sanitized)
+{
+    // TODO:  add support for multiple library cabinets 
+    $stm = $db->prepare('SELECT unit_name, unit_address, user.box_nr as user_box, user.access_code as user_code FROM unit INNER JOIN user ON user.unit_id = unit.unit_id WHERE user.user_id = :user_id ORDER BY user.unit_id, user.box_nr;');
+    $stm->bindValue(':user_id', $user_id_sanitized);
+    $address = $stm->execute();
+
+    $unit_data_all = array();
+    while ($rows = $address->fetchArray(1)) {
+        $library_name = $rows['unit_name'];
+        $library_address = $rows['unit_address'];
+        $user_box = $rows['user_box'];
+        $user_code = $rows['user_code'];
+        if (strlen($user_code) > 0) {
+            //                echo "Skrytka nr ".$user_box." w ". $library_name ." ". $library_address ." ".$user_code . "<br>";
+            $unit_data = array("box" => $user_box, "name" => $library_name, "address" => $library_address);
+            array_push($unit_data_all, $unit_data);
+        } else {
+            $unit_data_all = "";
+        }
+    }
+    return $unit_data_all;
+}
 
 if (count($_POST) > 0) {
     $user_id_sanitized_int = filter_input(INPUT_POST, 'user_id', FILTER_SANITIZE_NUMBER_INT);
@@ -36,36 +59,43 @@ if (count($_POST) > 0) {
 
 
     if (is_string($user_id_sanitized)) {
-        $db = new MyDB($dbfile);
-        $stm = $db->prepare('SELECT box_nr FROM "user" WHERE user_id = :user_id ');
-        $stm->bindValue(':user_id', $user_id_sanitized);
-        $score = $stm->execute();
-        // TODO:  add support for multiple library cabinets 
-        $stm = $db->prepare('SELECT unit_name, unit_address FROM unit INNER JOIN user ON user.unit_id = unit.unit_id WHERE user.user_id = :user_id LIMIT 1;');
-        $stm->bindValue(':user_id', $user_id_sanitized);
-        $address = $stm->execute();
-        $array_loop = "";
-        while ($rows = $score->fetchArray(1)) {
-            $rows_str = implode($rows);
-            $array_loop = $array_loop . "<span class='box-number'> " . $rows_str . " </span>\n";
-            $has_book = 1;
-        }
-        while ($rows = $address->fetchArray(1)) {
-            $library_name = $rows['unit_name'];
-            $library_address = $rows['unit_address'];
-        }
+        $unit_data_all = unit_name($db, $user_id_sanitized);
     }
 
-    if ($has_book == 1) {
+
+//    echo strlen($user_id_sanitized) . " strlen user_id_sanitized <br>";
+
+    //if (is_array($unit_data_all)) {
+        if (count($unit_data_all) > 0) {
+
+
         // user has the book in the locker 
         $status = "statusoff";
         $status1 = "statuson";
-        $tresc = "<h3>" . $info['box_found'] . $user_id_sanitized . "</h3><div class=\"flekserc\">\n" . $array_loop . "</div>";
+
+        echo count($unit_data_all) . " count<br>";
+        $i = 0;
+        $user_message_all = "";
+        while ($i < count($unit_data_all)) {
+
+            $library_name = $unit_data_all[$i]['name'];
+            $library_address = $unit_data_all[$i]['address'];
+            $user_box = $unit_data_all[$i]['box'];
+
+            $user_message = "<li>Skrytka nr " . $user_box . " w " . $library_name . ", " . $library_address . "</li>";
+            $user_message_all = $user_message_all . $user_message;
+            $i++;
+        }
+
+        $tresc = "<h3>" . $info['box_found'] . $user_id_sanitized . " </h3><div class=\"flekserc\">\n<ul>" . $user_message_all . "</ul></div>";
+
     } elseif (strlen($user_id_sanitized) > 5) {
+
         // user good locker no 
         $status = "statuson";
         $status1 = "statuson";
         $tresc = "<h3 class='alert'>" . $info['no_user_id'] . $user_id_sanitized . "</h3>";
+
     } else {
         // user has not passed validation / empty / letter / fewer digits than 6 
         $status = "statuson";
@@ -76,7 +106,7 @@ if (count($_POST) > 0) {
     // no post variable 
     $status = "statuson";
     $status1 = "statuson";
-    $tresc =  "<h2>" . $info['start_user'] . "</h2>";
+    $tresc =  "<h2>" . $info['start_user'] . " </h2>";
 }
 
 echo $page_head . "\n\t\t<title>" . $info['title_info']; ?></title>
