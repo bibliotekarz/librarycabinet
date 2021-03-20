@@ -1,10 +1,10 @@
 <?php
 header("X-Clacks-Overhead: GNU Terry Pratchett");
 require 'config.php';
-
+/*
 print_r($_POST);
 echo "<br> powyżej post <bR><bR><bR>";
-
+*/
 
 class MyDB extends SQLite3
 {
@@ -30,7 +30,6 @@ function unit_name($db, $user_id_sanitized)
         $user_box = $rows['user_box'];
         $user_code = $rows['user_code'];
         if (strlen($user_code) > 0) {
-            //                echo "Skrytka nr ".$user_box." w ". $library_name ." ". $library_address ." ".$user_code . "<br>";
             $unit_data = array("box" => $user_box, "name" => $library_name, "address" => $library_address);
             array_push($unit_data_all, $unit_data);
         } else {
@@ -62,18 +61,13 @@ if (count($_POST) > 0) {
         $unit_data_all = unit_name($db, $user_id_sanitized);
     }
 
-
-//    echo strlen($user_id_sanitized) . " strlen user_id_sanitized <br>";
-
-    //if (is_array($unit_data_all)) {
-        if (count($unit_data_all) > 0) {
-
+    
+        if (isset($unit_data_all[0]['box'])) {
 
         // user has the book in the locker 
-        $status = "statusoff";
-        $status1 = "statuson";
+        $status = "statuson";
+        $status1 = "statusoff";
 
-        echo count($unit_data_all) . " count<br>";
         $i = 0;
         $user_message_all = "";
         while ($i < count($unit_data_all)) {
@@ -88,25 +82,30 @@ if (count($_POST) > 0) {
         }
 
         $tresc = "<h3>" . $info['box_found'] . $user_id_sanitized . " </h3><div class=\"flekserc\">\n<ul>" . $user_message_all . "</ul></div>";
+     
+        $header_info = $library_name;
+
 
     } elseif (strlen($user_id_sanitized) > 5) {
 
         // user good locker no 
         $status = "statuson";
         $status1 = "statuson";
-        $tresc = "<h3 class='alert'>" . $info['no_user_id'] . $user_id_sanitized . "</h3>";
-
+        $tresc = "<h3 class='alert'>" . $info['no_user_id'] . $user_id_sanitized . " </h3>";
+        $header_info = $info['login_message'];
     } else {
         // user has not passed validation / empty / letter / fewer digits than 6 
         $status = "statuson";
         $status1 = "statuson";
-        $tresc = "<h3 class='alert'>" . $info['bad_user'] . "</h3>";
+        $tresc = "<h3 class='alert'>" . $info['bad_user'] . " </h3>";
+        $header_info = $info['login_message'];
     }
 } else {
     // no post variable 
-    $status = "statuson";
+    $status = "statusoff";
     $status1 = "statuson";
     $tresc =  "<h2>" . $info['start_user'] . " </h2>";
+    $header_info = $info['login_message'];
 }
 
 echo $page_head . "\n\t\t<title>" . $info['title_info']; ?></title>
@@ -114,16 +113,16 @@ echo $page_head . "\n\t\t<title>" . $info['title_info']; ?></title>
 
 <body>
     <header class="page-header">
-        <h1><?php echo $info['librarycabinet'] . $library_name; ?></h1>
-        <h2><?php echo $library_address; ?></h2>
+        <h1><?php echo $header_info; ?></h1>
+        <h2 class="<?php echo $status; ?>"><?php echo $library_address; ?></h2>
     </header>
-    <main role="main">
-        <section class="edycja <?php echo $status1; ?>">
+    <main role="main"> 
+        <section class="edycja <?php echo $status; ?>">
             <div class="">
                 <?php echo $tresc; ?>
             </div>
         </section>
-        <section class="edycja <?php echo $status; ?>">
+        <section class="edycja <?php echo $status1; ?>">
             <form method="post" action="" class="">
                 <div class="flekser">
                     <h4><?php echo $info['head_info']; ?></h4>
