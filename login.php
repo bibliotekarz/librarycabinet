@@ -59,7 +59,7 @@ echo $page_head . "\n\t\t<title>" . $info['login_title']; ?></title>
                 </div>
                 <br>
                 <input type="submit" name="submit" value="<?php echo $info['send_button']; ?>">
-                <input type="reset">
+                <input type="reset" name="reset" value="<?php echo $info['reset_button']; ?>">
             </form>
         </section>
     </main>

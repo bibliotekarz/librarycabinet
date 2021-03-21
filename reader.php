@@ -18,7 +18,6 @@ $db = new MyDB($dbfile);
 
 function unit_name($db, $user_id_sanitized)
 {
-    // TODO:  add support for multiple library cabinets 
     $stm = $db->prepare('SELECT unit_name, unit_address, user.box_nr as user_box, user.access_code as user_code FROM unit INNER JOIN user ON user.unit_id = unit.unit_id WHERE user.user_id = :user_id ORDER BY user.unit_id, user.box_nr;');
     $stm->bindValue(':user_id', $user_id_sanitized);
     $address = $stm->execute();
@@ -61,8 +60,8 @@ if (count($_POST) > 0) {
         $unit_data_all = unit_name($db, $user_id_sanitized);
     }
 
-    
-        if (isset($unit_data_all[0]['box'])) {
+
+    if (isset($unit_data_all[0]['box'])) {
 
         // user has the book in the locker 
         $status = "statuson";
@@ -76,16 +75,15 @@ if (count($_POST) > 0) {
             $library_address = $unit_data_all[$i]['address'];
             $user_box = $unit_data_all[$i]['box'];
 
+            //FIXME: Maybe add a book title 
             $user_message = "<li>Skrytka nr " . $user_box . " w " . $library_name . ", " . $library_address . "</li>";
             $user_message_all = $user_message_all . $user_message;
             $i++;
         }
 
         $tresc = "<h3>" . $info['box_found'] . $user_id_sanitized . " </h3><div class=\"flekserc\">\n<ul>" . $user_message_all . "</ul></div>";
-     
+
         $header_info = $library_name;
-
-
     } elseif (strlen($user_id_sanitized) > 5) {
 
         // user good locker no 
@@ -116,7 +114,7 @@ echo $page_head . "\n\t\t<title>" . $info['title_info']; ?></title>
         <h1><?php echo $header_info; ?></h1>
         <h2 class="<?php echo $status; ?>"><?php echo $library_address; ?></h2>
     </header>
-    <main role="main"> 
+    <main role="main">
         <section class="edycja <?php echo $status; ?>">
             <div class="">
                 <?php echo $tresc; ?>
