@@ -191,7 +191,7 @@ while ($row = $stm->fetchArray(1)) {
     $unit_name = $row['unit_name'];
     $unit_address = $row['unit_address'];
     $unit_size = $row['number_box'];
-    $unit = "<li>" . $info['id'] . $unit_id . ". " . $unit_name . ". " . $unit_address . $info['lockers'] . $unit_size . ".</li>";
+    $unit = "<li>" . $info['id'] . $unit_id . ". " . $unit_name . ". " . $unit_address .". ". $info['lockers'] . $unit_size . ".</li>";
     $all_units .= $unit;
 }
 
