@@ -164,7 +164,8 @@ echo $page_head . "\n\t\t<title>" . $info['machine_title']; ?></title>
                         <input type="hidden" value="<?php echo $selected_unit; ?>" name="id">
                     </div>
                 </div>
-                <input type="submit" id="btn_submit" value="<?php echo $info['save_changes']; ?>">
+                <input type="submit" id="btn_submit" value="<?php echo $info['save_changes']; 
+                // TODO: add alert when some data is missing   ?>">
             </form>
         </main>
     <?php
