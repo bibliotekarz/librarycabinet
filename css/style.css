@@ -1,0 +1,217 @@
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, [col-start] 1fr);
+    grid-gap: 20px;
+    border-color: red;
+    border-style: solid;
+}
+
+.grid-item {
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+}
+
+.pelna {
+    background-color: beige;
+    opacity: 0.9;
+    color: black;
+}
+
+.przeterminowana {
+    background: tomato;
+    color: black;
+}
+
+.pusta {
+    background: lightgray;
+    color: black;
+}
+
+.main-data {
+    font-weight: bold;
+    font-size: 1.3em;
+}
+
+.highlighted-description {
+    font-weight: normal;
+    font-size: 1.1em;
+    color: #000;
+}
+
+.flekser {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flekserc {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+.box-number {
+    font-size: 2.5em;
+    font-weight: bold;
+    border-color: gray;
+    background-color: lightgray;
+    border-style: solid;
+    /*       padding: 0 20 0 20px; */
+    margin-right: .2em;
+    padding-left: 0.2em;
+    padding-right: .2em;
+}
+
+.machine-box {
+    padding: 10px;
+    margin: 10px;
+    border-bottom: aqua;
+    border-top: aqua;
+    border-top-style: dashed;
+    border-bottom-style: dashed;
+    /* 
+    font-size: 1em;
+    font-weight: bold;
+    border-color: gray;
+    background-color: lightgray;
+    border-style: solid;
+    padding-left: .2em;
+    padding-right: .2em;
+    margin-left: .2em;
+    margin-right: .2em; */
+}
+
+.panel-checkboxes {
+    font-size: 1em;
+    font-weight: normal;
+    padding: 0 15 0 15px;
+    text-align: center;
+}
+
+.decoration-none {
+    text-decoration: none;
+    color: black;
+}
+
+.realized-list {
+    color: gray;
+    font-weight: 800;
+}
+
+.edycja {
+    background-color: beige;
+    opacity: 0.9;
+    color: black;
+    padding: 1em;
+    margin-bottom: 1em;
+    /* max-width: 450px; */
+}
+
+.descriptive-container {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    grid-gap: 10px;
+    padding-top: 10px;
+}
+
+.descriptive-container-end {
+    /* display: inline-block; */
+    /* max-width: 170px; */
+    text-align: right;
+}
+
+.alert {
+    color: red;
+    text-align: center;
+}
+
+.ok {
+    color: green;
+    text-align: center;
+}
+
+.statuson {
+    display: block;
+}
+
+.statusoff {
+    display: none;
+}
+
+input[type=checkbox] {
+    transform: scale(1.5);
+    cursor: pointer;
+}
+
+input[type=text] {
+    cursor: pointer;
+    margin-bottom: .5em;
+    width: 300px;
+}
+
+input[type=password] {
+    cursor: pointer;
+    margin-bottom: .5em;
+    width: 300px;
+}
+
+input[type=number] {
+    cursor: pointer;
+    margin-bottom: .5em;
+    width: 300px;
+}
+
+body {
+    padding: 1em;
+    background-image: url('../img/books-768426_1920.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color: beige;
+    max-width: 800px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+header {
+    background-color: beige;
+    opacity: 0.9;
+    padding: 1em;
+}
+
+main {
+    background-color: beige;
+    opacity: 0.9;
+    padding: 1em;
+}
+
+section {
+    background-color: beige;
+    opacity: 0.9;
+    padding: 1em;
+}
+
+nav {
+    background-color: beige;
+    opacity: 0.9;
+    padding: 1em;
+}
+
+footer {
+    background-color: beige;
+    opacity: 0.9;
+    padding: 1em;
+    font-size: x-small;
+}
+
+h1, h2, h3 {
+    font-family: 'Jost', sans-serif;
+}
+
+li {
+    list-style: "📕";
+    padding-left: 0.7em;
+}

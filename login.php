@@ -51,11 +51,11 @@ echo $page_head . "\n\t\t<title>" . $info['login_title']; ?></title>
                 <?php echo ($message != "") ? $message : ''; ?>
                 <div class="flekser">
                     <label for="user_name"><?php echo $info['login_name']; ?></label>
-                    <input type="text" name="user_name">
+                    <input type="text" name="user_name" maxlength="50">
                 </div>
                 <div class="flekser">
                     <label for="password"><?php echo $info['login_pass']; ?></label>
-                    <input type="password" name="password">
+                    <input type="password" name="password" maxlength="50">
                 </div>
                 <br>
                 <input type="submit" name="submit" value="<?php echo $info['send_button']; ?>">

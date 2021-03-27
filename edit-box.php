@@ -159,7 +159,7 @@ echo $page_head . "\n\t\t<title>" . $info['machine_title']; ?></title>
                         <div class="descriptive-container-end"><label for="end_date" class=""><?php echo $info['date_emptying']; ?></label></div>
                         <div class=""><input class="" id="box_end_date" name="end_date" value="<?php echo $box_info[2]; ?>" type="date"></div>
                         <div class="descriptive-container-end"><label for="id_user" class=""><?php echo $info['reader_id']; ?></label></div>
-                        <div class=""><input class="" id="box_id_user" name="id_user" value="<?php echo $box_info[3]; ?>"></div>
+                        <div class=""><input class="" id="box_id_user" name="id_user" value="<?php echo $box_info[3]; ?>" type="text"></div>
                         <input type="hidden" value="<?php echo $selected_box; ?>" name="box">
                         <input type="hidden" value="<?php echo $selected_unit; ?>" name="id">
                     </div>
@@ -177,7 +177,7 @@ echo $page_head . "\n\t\t<title>" . $info['machine_title']; ?></title>
     }
 
     ?>
-    <script src="./script-box.js"></script>
+    <script src="js/script-box.js"></script>
 </body>
 
 </html>
