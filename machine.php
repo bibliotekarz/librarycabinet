@@ -154,6 +154,7 @@ echo $page_head . "\n\t\t<title>" . $info['machine_title']; ?></title>
             <ul>
                 <li><?php echo $info['admin_logout']; ?></li>
                 <li><?php echo $info['admin_page']; ?></li>
+                <li><?php echo $info['machine_page']; ?></li>
             </ul>
         </nav>
         <main role="main">

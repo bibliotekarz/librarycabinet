@@ -45,8 +45,10 @@ if ($action_librarian === 0) {
             $stm->bindValue(':librarian_sanitized', $librarian_login_sanitized);
             $stm->bindValue(':librarian_pass', $librarian_pass);
             $stm->execute();
+            $librarian_action_message_class = "ok";
             $librarian_action_message = $info['add_librarian_account'] . $librarian_login_sanitized . "<br>";
         } else {
+            $librarian_action_message_class = "alert";
             $librarian_action_message = $info['account_exists'] . $librarian_login_sanitized . "<br>";
         }
     } else {
@@ -65,6 +67,7 @@ if ($action_librarian === 0) {
             $stm = $db->prepare("DELETE from librarian where librarian_name = :librarian_sanitized");
             $stm->bindValue(':librarian_sanitized', $librarian_login_sanitized);
             $stm->execute();
+            $librarian_action_message_class = "ok";
             $librarian_action_message = $info['account_deleted'] . $librarian_login_sanitized . "<br>";
         } else {
             $librarian_action_message_class = "alert";
@@ -81,8 +84,10 @@ if ($action_librarian === 0) {
             $stm->bindValue(':librarian_sanitized', $librarian_login_sanitized);
             $stm->bindValue(':librarian_pass', $librarian_pass);
             $stm->execute();
+            $librarian_action_message_class = "ok";
             $librarian_action_message = $info['password_librarian_changed'] . $librarian_login_sanitized . "<br>";
         } else {
+            $librarian_action_message_class = "alert";
             $librarian_action_message = $info['account_not_exist'] . $librarian_login_sanitized . "<br>";
         }
     } else {
@@ -129,9 +134,9 @@ if ($action_machine === 0) {
         $stm->bindValue(':unit_size', $unit_size);
         $stm->bindValue(':unit_column', $unit_column);
         $stm->execute();
+        $machine_action_message_class = "ok";
         $machine_action_message = $info['machine_added'] . $unit_name . "<br>";
     } else {
-
         $machine_action_message_class = "alert";
         $machine_action_message = $info['not_all_data_entered_correctly'];
     }
@@ -150,6 +155,7 @@ if ($action_machine === 0) {
                 $stm = $db->prepare("DELETE from unit where unit_id = :unit_id");
                 $stm->bindValue(':unit_id', $unit_id);
                 $stm->execute();
+                $machine_action_message_class = "ok";
                 $machine_action_message = $info['machine_deleted']  . $unit_id . "<br>";
             } else {
                 $machine_action_message_class = "alert";
@@ -172,6 +178,7 @@ if ($action_machine === 0) {
             $stm->bindValue(':unit_size', $unit_size);
             $stm->bindValue(':unit_column', $unit_column);
             $stm->execute();
+            $machine_action_message_class = "ok";
             $machine_action_message = $info['machine_data_changed'] . $unit_id . "<br>";
         } else {
             $machine_action_message_class = "alert";
@@ -260,11 +267,11 @@ echo $page_head . "\n\t\t<title>" . $info['admin_title']; ?></title>
                     <form name="admin_machines" method="post" action="" class="">
                         <div class="flekser">
                             <label for="machine_id"><?php echo $info['admin_machine_id']; ?></label>
-                            <input type="tekst" class="" id="id-machine_id" name="machine_id">
+                            <input type="text" class="" id="id-machine_id" name="machine_id">
                         </div>
                         <div class="flekser">
                             <label for="machine_name"><?php echo $info['admin_machine_name']; ?></label>
-                            <input type="tekst" class="" id="id-machine_name" name="machine_name">
+                            <input type="text" class="" id="id-machine_name" name="machine_name">
                         </div>
                         <div class="flekser">
                             <label for="machine_address"><?php echo $info['admin_machine_address']; ?></label>
@@ -310,7 +317,7 @@ echo $page_head . "\n\t\t<title>" . $info['admin_title']; ?></title>
     }
 
     ?>
-    <script src="./script.js"></script>
+    <script src="js/script.js"></script>
 </body>
 
 </html>
