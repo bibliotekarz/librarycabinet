@@ -66,5 +66,8 @@ $info = [
     "reader_id" => "User ID ",
     "save_changes" => "Save Changes",
     "clear_fields" => "Empty the stash",
-    "reset_button" => "Reset"
+    "reset_button" => "Reset",
+    "cache_emptied" => "The hiding place has been emptied.", 
+    "data_saved" => "The data has been saved.", 
+    "fill_fields" => "Fill in all fields."
 ];
