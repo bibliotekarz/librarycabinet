@@ -66,5 +66,8 @@ $info = [
     "reader_id" => "Identyfikator użytkownika",
     "save_changes" => "Zapisz zmiany",
     "clear_fields" => "Opróżnij skrytkę",
-    "reset_button" => "Wyczyść pola"
+    "reset_button" => "Wyczyść pola",
+    "cache_emptied" => "Skrytka została opróżniona.",
+    "data_saved" => "Dane zostały zapisane.",
+    "fill_fields" => "Wypełnij wszystkie pola."
 ];

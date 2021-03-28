@@ -2,7 +2,6 @@
 require 'config.php';
 session_start();
 
-
 class MyDB extends SQLite3
 {
     function __construct($dbfile)
@@ -29,7 +28,7 @@ $id_user = filter_input(INPUT_POST, 'id_user', FILTER_SANITIZE_STRING);
 $box = filter_input(INPUT_POST, 'box', FILTER_VALIDATE_INT);
 $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 
-if ($selected_unit < 1 || $selected_box < 1){
+if ($selected_unit < 1 || $selected_box < 1) {
     header("Location:machine.php");
 }
 
@@ -66,7 +65,8 @@ function test_box($db, $selected_unit, $selected_box)
 }
 
 
-function update_box($db, $end_date, $title, $secret_code, $id_user, $box, $id){
+function update_box($db, $end_date, $title, $secret_code, $id_user, $box, $id)
+{
     $stm = $db->prepare("UPDATE user set date_insertion = :end_date, title = :title, access_code = :secret_code, user_id = :id_user where box_nr = :box and unit_id = :id");
     $stm->bindValue(':end_date', $end_date);
     $stm->bindValue(':title', $title);
@@ -77,7 +77,8 @@ function update_box($db, $end_date, $title, $secret_code, $id_user, $box, $id){
     $stm->execute();
 }
 
-function insert_box($db, $end_date, $title, $secret_code, $id_user, $box, $id){
+function insert_box($db, $end_date, $title, $secret_code, $id_user, $box, $id)
+{
     $stm = $db->prepare("INSERT INTO user (date_insertion, title, access_code, user_id, box_nr, unit_id) VALUES (:end_date, :title, :secret_code, :id_user, :box, :id)");
     $stm->bindValue(':end_date', $end_date);
     $stm->bindValue(':title', $title);
@@ -88,7 +89,8 @@ function insert_box($db, $end_date, $title, $secret_code, $id_user, $box, $id){
     $stm->execute();
 }
 
-function selected_box($db, $selected_unit, $selected_box){
+function selected_box($db, $selected_unit, $selected_box)
+{
     $stm = $db->prepare("SELECT * from user where box_nr = :box_nr and unit_id = :unit_id");
     $stm->bindValue(':box_nr', $selected_box);
     $stm->bindValue(':unit_id', $selected_unit);
@@ -120,12 +122,14 @@ $box_info = selected_box($db, $selected_unit, $selected_box);
 
 
 echo $page_head . "\n\t\t<title>" . $info['machine_title']; ?></title>
+
 </head>
 
 <body>
     <?php
     if (isset($_SESSION["name"])) {
     ?>
+
         <header class="page-header">
             <h1><?php echo $info['content_update']; ?></h1>
             <?php echo $info['admin_login_info'] . " <b>" . $_SESSION['name']; ?></b>.<br>
@@ -144,11 +148,12 @@ echo $page_head . "\n\t\t<title>" . $info['machine_title']; ?></title>
             <form action="./edit-box.php" method="post">
                 <div class="edycja">
 
+                    <h2 id="box_info" class="alert"></h2>
                     <div class="flekser"><span class="box-number"><?php echo $selected_box; ?></span>
                         <!--  TODO: to make some extra books in one safe  
                             div class="panel-checkboxes"><label>box full<br><input type="checkbox"></label></div -->
-                        <div class="panel-checkboxes"><input type="reset" id="" value="<?php echo $info['restore_data']; ?>"><br>
-                            <input type="button" id="clear_fields" value="<?php echo $info['clear_fields']; ?>">
+                        <div class="panel-checkboxes">
+                            <input type="submit" id="clear_fields" value="<?php echo $info['clear_fields']; ?>">
                         </div>
                     </div>
                     <div class="descriptive-container">
@@ -162,10 +167,12 @@ echo $page_head . "\n\t\t<title>" . $info['machine_title']; ?></title>
                         <div class=""><input class="" id="box_id_user" name="id_user" value="<?php echo $box_info[3]; ?>" type="text"></div>
                         <input type="hidden" value="<?php echo $selected_box; ?>" name="box">
                         <input type="hidden" value="<?php echo $selected_unit; ?>" name="id">
+                        <input type="hidden" value="<?php echo $info['cache_emptied']; ?>" id="cache_emptied">
+                        <input type="hidden" value="<?php echo $info['data_saved']; ?>" id="data_saved">
+                        <input type="hidden" value="<?php echo $info['fill_fields']; ?>" id="fill_fields">
                     </div>
                 </div>
-                <input type="submit" id="btn_submit" value="<?php echo $info['save_changes']; 
-                // TODO: add alert when some data is missing   ?>">
+                <input type="submit" id="btn_submit" value="<?php echo $info['save_changes']; ?>">
             </form>
         </main>
     <?php
